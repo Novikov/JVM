@@ -19,3 +19,5 @@ class TextExtensionsClass() {
 fun TextExtensionsClass.newExtension() {
 //    this.b
 }
+
+/** Можно делать extensions не только на тип класс, но и тип коллекцию параметризованною каким то классом. Так же можно делать свойства расширения*/
