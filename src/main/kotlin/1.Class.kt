@@ -1,7 +1,3 @@
-fun main() {
-
-}
-
 // Свойство это сочетание поля и методов доступа. В Kotlin это все генерируется под капотом
 class SimpleClass(val a: Int)
 
@@ -14,4 +10,7 @@ class SimpleClass1(val a: Int) {
         }
 }
 
-// TODO: Расписать Sealed (+ интерфейс и множественное наследование) и Data class
+//data class нельзя сделать open и унаследоваться
+data class SampleDataClass(val a: Int = 5, val b: Int = 10) {
+    val c = 20 // данное свойство не будет включено в equals и hash code в data class
+}
