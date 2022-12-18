@@ -1,7 +1,17 @@
-/** Top level method. Вызов данного метода из java как статического из данного файла с добавленным окончанием kt
- * Если хотим изменить имя файла используем аннотацию @file:JvmName(NewName) */
 @file:JvmName("MyFileName")
 
+import kotlin.reflect.KClass
+
+fun main() {
+    reifiedExample<String>()
+
+    println("\n ------------- \n")
+
+    printType(String::class)
+}
+
+/** Top level method. Вызов данного метода из java как статического из данного файла с добавленным окончанием kt
+ * Если хотим изменить имя файла используем аннотацию @file:JvmName(NewName) */
 fun catMethod(): String = "Hello from top level method!"
 
 /** Extension method, где String это Тип получатель, а this - объект получатель.
