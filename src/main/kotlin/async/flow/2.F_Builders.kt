@@ -1,4 +1,4 @@
-package async.Flow
+package async.flow
 
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow

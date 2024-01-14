@@ -1,4 +1,4 @@
-package async.Flow
+package async.flow
 
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
