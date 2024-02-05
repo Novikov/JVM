@@ -10,6 +10,7 @@ package data_management.algorithms
  * Node - элемент свиска хранит данные и ссылку на следующий элемент;
  * Head - указатель на начало списка;
  * Tail - указатель на конец списка;
+ * Temp - указатель для итерации по элементам списка (локальная переменная методов);
  * Указатель последнего элемента равен null;
  *
  * Big(o)
@@ -26,5 +27,61 @@ package data_management.algorithms
  * Таблица сравнения https://umbrellait.rapira.com/kBIfVs
  * */
 fun main() {
+    val myLinkedList = LinkedList(1)
+    myLinkedList.append(2)
+    myLinkedList.getInfo()
+}
 
+// Визуализация https://umbrellait.rapira.com/iwOYN2
+
+data class Node<T>(val value: T, var next: Node<T>? = null)
+
+class LinkedList<T> {
+    private var head: Node<T>? = null
+    private var tail: Node<T>? = null
+    private var length = 0
+
+    constructor(value: T) {
+        val newNode = Node(value = value)
+        head = newNode
+        tail = newNode
+        length = 1
+    }
+
+    fun append(value: T) {
+        val newNode = Node(value = value)
+        if (length == 0) {
+            head = newNode
+            tail = newNode
+        } else {
+            head?.next = newNode
+            tail = newNode
+        }
+        length++
+    }
+
+    fun printList() {
+        var temp = head
+        while (temp != null) {
+            println(temp.value)
+            temp = temp.next
+        }
+    }
+
+    fun getHead() {
+        println("Head: " + head?.value)
+    }
+
+    fun getTail() {
+        println("Tail: " + tail?.value)
+    }
+
+    fun getLength() {
+        println("Length: $length")
+    }
+
+    fun getInfo() {
+        println("Length: $length, Head: ${head?.value}, Tail: ${tail?.value}}")
+        printList()
+    }
 }
