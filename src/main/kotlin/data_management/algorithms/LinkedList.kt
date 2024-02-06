@@ -10,7 +10,7 @@ package data_management.algorithms
  * Node - элемент свиска хранит данные и ссылку на следующий элемент;
  * Head - указатель на начало списка;
  * Tail - указатель на конец списка;
- * Temp - указатель для итерации по элементам списка (локальная переменная методов);
+ * Pre/Temp - указатели для итерации по элементам списка (локальные переменные методов);
  * Указатель последнего элемента равен null;
  *
  * Big(o)
@@ -27,8 +27,11 @@ package data_management.algorithms
  * Таблица сравнения https://umbrellait.rapira.com/kBIfVs
  * */
 fun main() {
-    val myLinkedList = LinkedList(1)
-    myLinkedList.append(2)
+    val myLinkedList = LinkedList(2)
+    myLinkedList.append(3)
+    myLinkedList.prepend(1)
+    myLinkedList.getInfo()
+    myLinkedList.removeFirst()
     myLinkedList.getInfo()
 }
 
@@ -58,6 +61,48 @@ class LinkedList<T> {
             tail = newNode
         }
         length++
+    }
+
+    fun removeLast(): Node<T>? {
+        if (length == 0) return null
+        var pre = head
+        var temp = head
+        while (temp?.next != null) {
+            pre = temp
+            temp = temp.next
+        }
+        tail = pre
+        tail?.next = null
+        length--
+        if (length == 0) { // Чтобы не уйти в отрицательные значения
+            tail = null
+            head = null
+        }
+        return temp
+    }
+
+    fun prepend(value: T) {
+        val newNode = Node(value)
+        if (length == 0) {
+            tail = newNode
+            head = newNode
+        } else {
+            newNode.next = head
+            head = newNode
+        }
+        length++
+    }
+
+    fun removeFirst(): Node<T>? {
+        if (length == 0) return null
+        val temp = head
+        head = head?.next
+        temp?.next = null
+        length--
+        if (length == 0) {
+            tail = null // head не нужно занулять потому что он занулится выше
+        }
+        return temp
     }
 
     fun printList() {
