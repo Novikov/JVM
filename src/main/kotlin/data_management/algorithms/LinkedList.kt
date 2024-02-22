@@ -24,16 +24,19 @@ package data_management.algorithms
  * 5)Получение элемента по индексу так же займет время O(n) потому что заставляет итерироваться. Для этой операции лучше
  * использовать ArrayList
  *
+ * Данный list содержит методы которые используются в других методах. append и prepend, removeFirst и removeLast используются в
+ * insert и remove.
+ *
+ * todo Разобраться почему remove методы возвращают Node, а add методы bolean.
+ *
  * Таблица сравнения https://umbrellait.rapira.com/kBIfVs
  * */
 fun main() {
     val myLinkedList = LinkedList(1)
     myLinkedList.append(2)
     myLinkedList.append(3)
-    myLinkedList.append(4)
-    myLinkedList.append(5)
-    myLinkedList.getInfo()
-    myLinkedList.set(2, 10)
+    myLinkedList.insert(1, 10)
+    myLinkedList.remove(1)
     myLinkedList.getInfo()
 }
 
@@ -70,6 +73,36 @@ class LinkedList<T> {
         } else {
             false
         }
+    }
+
+    fun insert(index: Int, value: T): Boolean {
+        if (index < 0 || index > length) return false
+        if (index == 0) {
+            prepend(value)
+            return true
+        }
+        if (index == length) {
+            append(value)
+            return true
+        }
+        val temp = get(index - 1)
+        val newNode = Node(value)
+        newNode.next = temp!!.next
+        temp.next = newNode
+        length++
+        return true
+    }
+
+    fun remove(index: Int): Node<T>? {
+        if (index < 0 || index > length) return null
+        if (index == 0) return removeFirst()
+        if (index == length) return removeLast()
+        val prev = get(index - 1)
+        val temp = prev!!.next
+        prev.next = temp!!.next
+        temp.next = null
+        length--
+        return temp
     }
 
     fun append(value: T) {
