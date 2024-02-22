@@ -20,24 +20,26 @@ package data_management.algorithms
  * а для этого необходимо итерироваться по всем элементам;
  * 3)Добавление элемента в начало списка занимает время O(1) по аналогии с удалением из конца. У нас есть все данные, чтобы
  * переместить HEAD.
- * 4)Добавление/Удаление элемента в середине списка занимает время O(1) потому что необходимо итерироваться по всему списку.
+ * 4)Добавление/Удаление элемента в середине списка занимает время O(n) потому что необходимо итерироваться по всему списку.
  * 5)Получение элемента по индексу так же займет время O(n) потому что заставляет итерироваться. Для этой операции лучше
  * использовать ArrayList
  *
  * Таблица сравнения https://umbrellait.rapira.com/kBIfVs
  * */
 fun main() {
-    val myLinkedList = LinkedList(2)
+    val myLinkedList = LinkedList(1)
+    myLinkedList.append(2)
     myLinkedList.append(3)
-    myLinkedList.prepend(1)
+    myLinkedList.append(4)
+    myLinkedList.append(5)
     myLinkedList.getInfo()
-    myLinkedList.removeFirst()
+    myLinkedList.set(2, 10)
     myLinkedList.getInfo()
 }
 
 // Визуализация https://umbrellait.rapira.com/iwOYN2
 
-data class Node<T>(val value: T, var next: Node<T>? = null)
+data class Node<T>(var value: T, var next: Node<T>? = null)
 
 class LinkedList<T> {
     private var head: Node<T>? = null
@@ -51,13 +53,32 @@ class LinkedList<T> {
         length = 1
     }
 
+    fun get(index: Int): Node<T>? {
+        if (index < 0 || index >= length) return null
+        var temp = head
+        for (i in 0 until index) {
+            temp = temp?.next
+        }
+        return temp
+    }
+
+    fun set(index: Int, value: T): Boolean {
+        var temp = get(index)
+        return if (temp != null) {
+            temp.value = value
+            true
+        } else {
+            false
+        }
+    }
+
     fun append(value: T) {
         val newNode = Node(value = value)
         if (length == 0) {
             head = newNode
             tail = newNode
         } else {
-            head?.next = newNode
+            tail?.next = newNode
             tail = newNode
         }
         length++
