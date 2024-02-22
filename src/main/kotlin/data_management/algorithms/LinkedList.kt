@@ -35,8 +35,7 @@ fun main() {
     val myLinkedList = LinkedList(1)
     myLinkedList.append(2)
     myLinkedList.append(3)
-    myLinkedList.insert(1, 10)
-    myLinkedList.remove(1)
+    myLinkedList.reverse()
     myLinkedList.getInfo()
 }
 
@@ -182,5 +181,19 @@ class LinkedList<T> {
     fun getInfo() {
         println("Length: $length, Head: ${head?.value}, Tail: ${tail?.value}}")
         printList()
+    }
+
+    fun reverse() {
+        var temp = head
+        head = tail
+        tail = temp
+        var after = temp?.next
+        var before: Node<T>? = null
+        for (i in 0..<length) {
+            after = temp?.next
+            temp?.next = before
+            before = temp
+            temp = after
+        }
     }
 }
