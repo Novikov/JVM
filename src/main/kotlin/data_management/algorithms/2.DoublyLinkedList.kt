@@ -3,7 +3,8 @@ package data_management.algorithms
 
 /**
  * Отличия:
- * Node хранит ссылку на предыдущий node;
+ * Node хранит ссылку на предыдущий node и за счет этого некоторые операции выполняются за O(1), а некоторые за O(n),
+ * но более эффективно потому что итерация будет начинаться с более удобного края;
  * RemoveLast выполняется за O(1);
  * В методах removeFirst()/removeLast() используется temp переменная.
  * */
@@ -11,7 +12,8 @@ fun main() {
     val myLinkedList = LinkedList(1)
     myLinkedList.append(2)
     myLinkedList.append(3)
-    myLinkedList.reverse()
+    myLinkedList.getInfo()
+    myLinkedList.insert(1, 5)
     myLinkedList.getInfo()
 }
 
@@ -30,108 +32,77 @@ class DoubleLinkedList<T> {
         length = 1
     }
 
-//    fun get(index: Int): DoubleNode<T>? {
-//        if (index < 0 || index >= length) return null
-//        var temp = head
-//        for (i in 0 until index) {
-//            temp = temp?.next
-//        }
-//        return temp
-//    }
-//
-//    fun set(index: Int, value: T): Boolean {
-//        var temp = get(index)
-//        return if (temp != null) {
-//            temp.value = value
-//            true
-//        } else {
-//            false
-//        }
-//    }
-//
-//    fun insert(index: Int, value: T): Boolean {
-//        if (index < 0 || index > length) return false
-//        if (index == 0) {
-//            prepend(value)
-//            return true
-//        }
-//        if (index == length) {
-//            append(value)
-//            return true
-//        }
-//        val temp = get(index - 1)
-//        val newNode = DoubleNode(value)
-//        newNode.next = temp!!.next
-//        temp.next = newNode
-//        length++
-//        return true
-//    }
-//
-//    fun remove(index: Int): DoubleNode<T>? {
-//        if (index < 0 || index > length) return null
-//        if (index == 0) return removeFirst()
-//        if (index == length) return removeLast()
-//        val prev = get(index - 1)
-//        val temp = prev!!.next
-//        prev.next = temp!!.next
-//        temp.next = null
-//        length--
-//        return temp
-//    }
-//
-//    fun append(value: T) {
-//        val newNode = DoubleNode(value = value)
-//        if (length == 0) {
-//            head = newNode
-//            tail = newNode
-//        } else {
-//            tail?.next = newNode
-//            tail = newNode
-//        }
-//        length++
-//    }
-//
-//    fun removeLast(): DoubleNode<T>? {
-//        if (length == 0) return null
-//        var pre = head
-//        var temp = head
-//        while (temp?.next != null) {
-//            pre = temp
-//            temp = temp.next
-//        }
-//        tail = pre
-//        tail?.next = null
-//        length--
-//        if (length == 0) { // Чтобы не уйти в отрицательные значения
-//            tail = null
-//            head = null
-//        }
-//        return temp
-//    }
-//
-//    fun prepend(value: T) {
-//        val newNode = DoubleNode(value)
-//        if (length == 0) {
-//            tail = newNode
-//            head = newNode
-//        } else {
-//            newNode.next = head
-//            head = newNode
-//        }
-//        length++
-//    }
-//
-//    fun removeFirst(): DoubleNode<T>? {
-//        if (length == 0) return null
-//        val temp = head
-//        head = head?.next
-//        temp?.next = null
-//        length--
-//        if (length == 0) {
-//            tail = null // head не нужно занулять потому что он занулится выше
-//        }
-//        return temp
-//    }
+    //Более эффективный get за счет выбора позиции начала итериации. От говоры или от хвоста
+    fun get(index: Int): DoubleNode<T>? {
+        if (index < 0 || index >= length) {
+            return null
+        }
+        var temp = head
+        if (index < length / 2) {
+            for (i in 0 until index) {
+                temp = temp!!.next
+            }
+        } else {
+            temp = tail
+            for (j in length - 1 downTo index + 1) {
+                temp = temp?.prev
+            }
+        }
+        return temp
+    }
+
+    fun set(index: Int, value: T): Boolean {
+        val temp = get(index)
+        return if (temp != null) {
+            temp.value = value
+            true
+        } else {
+            false
+        }
+    }
+
+    fun insert(index: Int, value: T): Boolean {
+        if (index < 0 || index > length) {
+            return false
+        }
+        if (index == 0) {
+            prepend(value)
+            return true
+        }
+        if (index == length) {
+            append(value)
+            return true
+        }
+        val newNode = DoubleNode(value)
+        val before = get(index - 1)
+        val after = before?.next
+        newNode.prev = before
+        newNode.next = after
+        after?.prev = newNode
+        before?.next = newNode
+        length++
+        return true
+    }
+
+    //Более эффективный способ через одну переменную без использование before и after
+    fun remove(index: Int): DoubleNode<T>? {
+        if (index < 0 || index >= length) {
+            return null
+        }
+        if (index == 0) {
+            return removeFirst()
+        }
+        if (index == length - 1) {
+            return removeLast()
+        }
+        val temp = get(index)
+        temp?.next?.prev = temp?.prev
+        temp?.prev?.next = temp?.next
+        temp?.next = null
+        temp?.prev = null
+        length--
+        return temp
+    }
 
     fun append(value: T) {
         val newNode = DoubleNode(value)
