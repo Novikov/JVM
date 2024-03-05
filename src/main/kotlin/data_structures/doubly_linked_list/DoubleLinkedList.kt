@@ -1,39 +1,19 @@
-package data_management.algorithms
-
-
-/**
- * Отличия:
- * Node хранит ссылку на предыдущий node и за счет этого некоторые операции выполняются за O(1), а некоторые за O(n),
- * но более эффективно потому что итерация будет начинаться с более удобного края;
- * RemoveLast выполняется за O(1);
- * В методах removeFirst()/removeLast() используется temp переменная.
- * */
-fun main() {
-    val myLinkedList = LinkedList(1)
-    myLinkedList.append(2)
-    myLinkedList.append(3)
-    myLinkedList.getInfo()
-    myLinkedList.insert(1, 5)
-    myLinkedList.getInfo()
-}
-
-
-data class DoubleNode<T>(var value: T, var next: DoubleNode<T>? = null, var prev: DoubleNode<T>? = null)
+package data_structures.doubly_linked_list
 
 class DoubleLinkedList<T> {
-    private var head: DoubleNode<T>? = null
-    private var tail: DoubleNode<T>? = null
+    private var head: Node<T>? = null
+    private var tail: Node<T>? = null
     private var length = 0
 
     constructor(value: T) {
-        val newNode = DoubleNode(value = value)
+        val newNode = Node(value = value)
         head = newNode
         tail = newNode
         length = 1
     }
 
     //Более эффективный get за счет выбора позиции начала итериации. От говоры или от хвоста
-    fun get(index: Int): DoubleNode<T>? {
+    fun get(index: Int): Node<T>? {
         if (index < 0 || index >= length) {
             return null
         }
@@ -73,7 +53,7 @@ class DoubleLinkedList<T> {
             append(value)
             return true
         }
-        val newNode = DoubleNode(value)
+        val newNode = Node(value)
         val before = get(index - 1)
         val after = before?.next
         newNode.prev = before
@@ -85,7 +65,7 @@ class DoubleLinkedList<T> {
     }
 
     //Более эффективный способ через одну переменную без использование before и after
-    fun remove(index: Int): DoubleNode<T>? {
+    fun remove(index: Int): Node<T>? {
         if (index < 0 || index >= length) {
             return null
         }
@@ -105,7 +85,7 @@ class DoubleLinkedList<T> {
     }
 
     fun append(value: T) {
-        val newNode = DoubleNode(value)
+        val newNode = Node(value)
         if (length == 0) {
             head = newNode
             tail = newNode
@@ -117,7 +97,7 @@ class DoubleLinkedList<T> {
         length++
     }
 
-    fun removeLast(): DoubleNode<T>? {
+    fun removeLast(): Node<T>? {
         if (length == 0) return null
         val temp = tail
         if (length == 1) {
@@ -133,7 +113,7 @@ class DoubleLinkedList<T> {
     }
 
     fun prepend(value: T) {
-        val newNode = DoubleNode(value)
+        val newNode = Node(value)
         if (length == 0) {
             head = newNode
             tail = newNode
@@ -145,7 +125,7 @@ class DoubleLinkedList<T> {
         length++
     }
 
-    fun removeFirst(): DoubleNode<T>? {
+    fun removeFirst(): Node<T>? {
         if (length == 0) return null
         val temp = head
         if (length == 1) {
@@ -190,7 +170,7 @@ class DoubleLinkedList<T> {
         head = tail
         tail = temp
         var after = temp?.next
-        var before: DoubleNode<T>? = null
+        var before: Node<T>? = null
         for (i in 0..<length) {
             after = temp?.next
             temp?.next = before
