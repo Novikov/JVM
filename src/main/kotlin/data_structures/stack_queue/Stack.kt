@@ -1,4 +1,4 @@
-package data_structures.stack
+package data_structures.stack_queue
 
 class Stack<T> {
     private var top: Node<T>?
@@ -55,5 +55,14 @@ class Stack<T> {
             top = newNode
         }
         height++
+    }
+
+    fun pop(): Node<T>? {
+        if (height == 0) return null
+        val temp = top
+        top = top?.next
+        temp?.next = null
+        height--
+        return temp
     }
 }
