@@ -24,7 +24,7 @@ class Stack<T> {
     }
 
     fun printStack() {
-        var temp: Node<*>? = top
+        var temp = top
         while (temp != null) {
             println(temp.value)
             temp = temp.next
