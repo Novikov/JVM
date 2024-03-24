@@ -1,3 +1,3 @@
-package data_structures.trees
+package data_structures.tree
 
 data class Node<T>(var value: T, var left: Node<T>? = null, var right: Node<T>? = null)

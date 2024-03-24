@@ -1,4 +1,4 @@
-package data_structures.trees
+package data_structures.tree
 
 class BinarySearchTree {
     var root: Node<Int>? = null

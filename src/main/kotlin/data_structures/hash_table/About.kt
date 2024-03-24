@@ -1,4 +1,4 @@
-package data_structures.hash_tables
+package data_structures.hash_table
 
 
 /**
