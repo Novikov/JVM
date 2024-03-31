@@ -19,13 +19,11 @@ internal class Queue<T> {
     }
 
     @JvmName("getLastQueue")
-
     fun getLast(): Node<T>? {
         return last
     }
 
     @JvmName("getLengthQueue")
-
     fun getLength(): Int {
         return length
     }
@@ -57,7 +55,6 @@ internal class Queue<T> {
     }
 
     @JvmName("makeEmptyQueue")
-
     fun makeEmpty() {
         first = null
         last = null

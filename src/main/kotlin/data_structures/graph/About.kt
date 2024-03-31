@@ -11,7 +11,18 @@ package data_structures.graph
  * матрице в которую можно конвертировать граф. Есть связь - будет 1. Если нет то 0. Как это делается показано вот тут https://www.udemy.com/course/data-structures-and-algorithms-java/learn/lecture/29629648#learning-tools
  * Помимо этих свойств у графов существуют и другие.
  * Так же граф можно представить в виде Списка.
+ *
+ * Два варианта представлений: https://umbrellait.rapira.com/RQSNg8
+ *
+ * На скринах буквы E и V обозначают Edge(ребро) и Vertex(вершина).
+ * Матрица очень сильно проигрывает по space complexity для всех манипуляций с вершинами и ребрами (Space complexity) https://umbrellait.rapira.com/k6BEP6
+ * Добавлении одной вершины - матрицу нужно заполнить нулями https://umbrellait.rapira.com/gmTajF
+ * Удаление вершины https://umbrellait.rapira.com/Os4nMU
+ * Добавление ребра между вершинами https://umbrellait.rapira.com/oB3xKD
+ * Удаление ребра https://umbrellait.rapira.com/wCh9JM
+ * Поэтому в данном примере рассматривается вариант со списком.
+ *
  * */
-fun main(){
+fun main() {
 
 }
