@@ -24,5 +24,18 @@ package data_structures.graph
  *
  * */
 fun main() {
+    val graph = Graph()
+    graph.addVertex("A")
+    graph.addVertex("B")
+    graph.addVertex("C")
+    graph.addEdge("A", "B")
+    graph.addEdge("A", "C")
+
+    graph.printGraph()
+    graph.removeEdge("A", "C")
+    graph.printGraph()
+
+    graph.removeVertex("A")
+    graph.printGraph()
 
 }
