@@ -8,10 +8,10 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 fun main() {
-    withoutChangingThreadExample()
+//    withoutChangingThreadExample()
 //    subscribeOnExample()
 //    observeOnExample()
-//    unionSubscribeOnObserveOn()
+    unionSubscribeOnObserveOn()
 //    doubleObserveOnExample()
 //    doubleSubscribeOnExample()
 //    doubleSubscribeOnExample2()
@@ -32,7 +32,7 @@ fun main() {
 fun withoutChangingThreadExample() {
     val observable: Observable<String> = Observable.create<String> {
         println("Inside start observable [thread] - ${Thread.currentThread().name}")
-        it.onNext("Emission Emit 1")
+        it.onNext("Emit 1")
         it.onNext("Emit 2")
         println("Inside intermediate observable [thread] - ${Thread.currentThread().name}")
         it.onNext("Emit 3")
@@ -69,7 +69,7 @@ fun withoutChangingThreadExample() {
 fun subscribeOnExample() {
     val observable: Observable<String> = Observable.create<String> {
         println("Inside start observable [thread] - ${Thread.currentThread().name}")
-        it.onNext("Emission Emit 1")
+        it.onNext("Emit 1")
         it.onNext("Emit 2")
         println("Inside intermediate observable [thread] - ${Thread.currentThread().name}")
         it.onNext("Emit 3")
@@ -106,7 +106,7 @@ fun subscribeOnExample() {
 fun observeOnExample() {
     val observable: Observable<String> = Observable.create<String> {
         println("Inside start observable [thread] - ${Thread.currentThread().name}")
-        it.onNext("Emission Emit 1")
+        it.onNext("Emit 1")
         it.onNext("Emit 2")
         println("Inside intermediate observable [thread] - ${Thread.currentThread().name}")
         it.onNext("Emit 3")
@@ -139,10 +139,16 @@ fun observeOnExample() {
 }
 
 /** В результате объединения subscribeOn + observeOn - эмиссия будет происходить на Computation, а поглощение на IO*/
+
+// TODO: Все эти примеры нужно доработать на поход в сеть с помощью Subjects.
+//  Потому что выпуск, выполнение работы и подтребление это 3 состояния а тут описано только 2
+// Уходить события по идее должны на главном потоке.
+//Короче да, рассмотреть все примеры с сетевыми запросами.
+
 fun unionSubscribeOnObserveOn() {
     val observable: Observable<String> = Observable.create<String> {
         println("Inside start observable [thread] - ${Thread.currentThread().name}")
-        it.onNext("Emission Emit 1")
+        it.onNext("Emit 1")
         it.onNext("Emit 2")
         println("Inside intermediate observable [thread] - ${Thread.currentThread().name}")
         it.onNext("Emit 3")
@@ -179,7 +185,7 @@ fun unionSubscribeOnObserveOn() {
 fun doubleObserveOnExample() {
     val observable: Observable<String> = Observable.create<String> {
         println("Inside start observable [thread] - ${Thread.currentThread().name}")
-        it.onNext("Emission Emit 1")
+        it.onNext("Emit 1")
         it.onNext("Emit 2")
         println("Inside intermediate observable [thread] - ${Thread.currentThread().name}")
         it.onNext("Emit 3")
@@ -216,7 +222,7 @@ fun doubleObserveOnExample() {
 fun doubleSubscribeOnExample() {
     val observable: Observable<String> = Observable.create<String> {
         println("Inside start observable [thread] - ${Thread.currentThread().name}")
-        it.onNext("Emission Emit 1")
+        it.onNext("Emit 1")
         it.onNext("Emit 2")
         println("Inside intermediate observable [thread] - ${Thread.currentThread().name}")
         it.onNext("Emit 3")
@@ -253,7 +259,7 @@ fun doubleSubscribeOnExample() {
 fun doubleSubscribeOnExample2() {
     val observable: Observable<String> = Observable.create<String> {
         println("Inside start observable [thread] - ${Thread.currentThread().name}")
-        it.onNext("Emission Emit 1")
+        it.onNext("Emit 1")
         it.onNext("Emit 2")
         println("Inside intermediate observable [thread] - ${Thread.currentThread().name}")
         it.onNext("Emit 3")
