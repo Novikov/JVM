@@ -1,5 +1,0 @@
-package kotlinhard
-
-fun main(){
-
-}
