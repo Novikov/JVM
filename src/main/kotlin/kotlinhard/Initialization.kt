@@ -1,4 +1,4 @@
-package kotlinlang
+package kotlinhard
 
 fun main() {
     val initSample = InitSample()
