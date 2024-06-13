@@ -1,4 +1,4 @@
-package data_structures.hash_table
+package cs.data_structures.hash_table
 
 
 class HashTable {

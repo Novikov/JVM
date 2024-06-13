@@ -1,4 +1,4 @@
-package data_structures.stack_queue
+package cs.data_structures.stack_queue
 
 internal class Queue<T> {
     var first: Node<T>?

@@ -1,19 +1,19 @@
-package data_structures.doubly_linked_list
+package cs.data_structures.doubly_linked_list
 
 class DoubleLinkedList<T> {
-    private var head: Node<T>? = null
-    private var tail: Node<T>? = null
+    private var head: cs.data_structures.doubly_linked_list.Node<T>? = null
+    private var tail: cs.data_structures.doubly_linked_list.Node<T>? = null
     private var length = 0
 
     constructor(value: T) {
-        val newNode = Node(value = value)
+        val newNode = cs.data_structures.doubly_linked_list.Node(value = value)
         head = newNode
         tail = newNode
         length = 1
     }
 
     //Более эффективный get за счет выбора позиции начала итериации. От говоры или от хвоста
-    fun get(index: Int): Node<T>? {
+    fun get(index: Int): cs.data_structures.doubly_linked_list.Node<T>? {
         if (index < 0 || index >= length) {
             return null
         }
@@ -53,7 +53,7 @@ class DoubleLinkedList<T> {
             append(value)
             return true
         }
-        val newNode = Node(value)
+        val newNode = cs.data_structures.doubly_linked_list.Node(value)
         val before = get(index - 1)
         val after = before?.next
         newNode.prev = before
@@ -65,7 +65,7 @@ class DoubleLinkedList<T> {
     }
 
     //Более эффективный способ через одну переменную без использование before и after
-    fun remove(index: Int): Node<T>? {
+    fun remove(index: Int): cs.data_structures.doubly_linked_list.Node<T>? {
         if (index < 0 || index >= length) {
             return null
         }
@@ -85,7 +85,7 @@ class DoubleLinkedList<T> {
     }
 
     fun append(value: T) {
-        val newNode = Node(value)
+        val newNode = cs.data_structures.doubly_linked_list.Node(value)
         if (length == 0) {
             head = newNode
             tail = newNode
@@ -97,7 +97,7 @@ class DoubleLinkedList<T> {
         length++
     }
 
-    fun removeLast(): Node<T>? {
+    fun removeLast(): cs.data_structures.doubly_linked_list.Node<T>? {
         if (length == 0) return null
         val temp = tail
         if (length == 1) {
@@ -113,7 +113,7 @@ class DoubleLinkedList<T> {
     }
 
     fun prepend(value: T) {
-        val newNode = Node(value)
+        val newNode = cs.data_structures.doubly_linked_list.Node(value)
         if (length == 0) {
             head = newNode
             tail = newNode
@@ -125,7 +125,7 @@ class DoubleLinkedList<T> {
         length++
     }
 
-    fun removeFirst(): Node<T>? {
+    fun removeFirst(): cs.data_structures.doubly_linked_list.Node<T>? {
         if (length == 0) return null
         val temp = head
         if (length == 1) {
@@ -170,7 +170,7 @@ class DoubleLinkedList<T> {
         head = tail
         tail = temp
         var after = temp?.next
-        var before: Node<T>? = null
+        var before: cs.data_structures.doubly_linked_list.Node<T>? = null
         for (i in 0..<length) {
             after = temp?.next
             temp?.next = before

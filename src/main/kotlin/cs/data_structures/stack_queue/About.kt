@@ -1,4 +1,4 @@
-package data_structures.stack_queue
+package cs.data_structures.stack_queue
 
 /**
  * Для реализации обеих структур данных может использоваться как LinkedList, так и ArrayList.

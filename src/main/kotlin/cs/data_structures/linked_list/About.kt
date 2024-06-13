@@ -1,4 +1,4 @@
-package data_structures.linked_list
+package cs.data_structures.linked_list
 
 
 /**
