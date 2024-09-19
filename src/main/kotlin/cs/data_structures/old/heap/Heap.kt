@@ -1,4 +1,4 @@
-package cs.data_structures.heap
+package cs.data_structures.old.heap
 
 
 class Heap {

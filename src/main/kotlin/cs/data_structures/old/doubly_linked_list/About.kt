@@ -1,6 +1,6 @@
-package cs.data_structures.doubly_linked_list
+package cs.data_structures.old.doubly_linked_list
 
-import cs.data_structures.linked_list.LinkedList
+import cs.data_structures.old.linked_list.LinkedList
 
 
 /**

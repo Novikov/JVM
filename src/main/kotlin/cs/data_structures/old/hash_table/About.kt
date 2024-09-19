@@ -1,4 +1,4 @@
-package cs.data_structures.hash_table
+package cs.data_structures.old.hash_table
 
 
 /**
