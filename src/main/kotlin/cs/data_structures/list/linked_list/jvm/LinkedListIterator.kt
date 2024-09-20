@@ -2,7 +2,7 @@ package cs.data_structures.list.linked_list.jvm
 
 import cs.data_structures.list.linked_list.Node
 
-class LinkedListIterator<T>(private val list: LinkedListJvm<T>) : Iterator<T> {
+class LinkedListIterator<T>(private val list: LinkedListJvm<T>) : Iterator<T>, MutableIterator<T> {
     private var index = 0
     private var lastNode: Node<T>? = null
 
@@ -15,6 +15,18 @@ class LinkedListIterator<T>(private val list: LinkedListJvm<T>) : Iterator<T> {
         }
         index++
         return lastNode!!.value
+    }
+
+    // Реализация MutableIterator интерфейса, нужна для удаления элементов через итератор во время прохода по коллекции
+    override fun remove() {
+        if (index == 1) {
+            list.pop()
+        } else {
+            val prevNode = list.nodeAt(index - 2) ?: return
+            list.removeAfter(prevNode)
+            lastNode = prevNode
+        }
+        index--
     }
 
     //Сообщает о том достигли ли мы конца коллекции

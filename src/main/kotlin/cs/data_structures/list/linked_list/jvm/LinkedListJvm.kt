@@ -2,19 +2,37 @@ package cs.data_structures.list.linked_list.jvm
 
 import cs.data_structures.list.linked_list.Node
 
-class LinkedListJvm<T> : Iterable<T> {
+class LinkedListJvm<T> : Iterable<T>, Collection<T>, MutableIterable<T>, MutableCollection<T> {
     private var head: Node<T>? = null
     private var tail: Node<T>? = null
-    var size = 0
+    override var size = 0
         private set
 
-    fun isEmpty(): Boolean {
+    /** Collection 2 метода*/
+    override fun containsAll(elements: Collection<T>): Boolean {
+        for (searched in elements) {
+            if (!contains(searched)) return false // пробегаемся по всем элементам и проверяем наличие
+        }
+        return true
+    }
+
+    override fun contains(element: T): Boolean {
+        for (item in this) {
+            if (item == element) return true // пробегаемся по всем элементам и проверяем наличие
+        }
+        return false
+    }
+
+    override fun isEmpty(): Boolean {
         return size == 0
     }
 
     /** Вставка значений*/
     fun push(value: T) {
-        head = Node(value = value, next = head) // Создаем новый Node у которого next будет старый head. После этого перевычисляем head
+        head = Node(
+            value = value,
+            next = head
+        ) // Создаем новый Node у которого next будет старый head. После этого перевычисляем head
         if (tail == null) {
             tail = head // Вычисляем tail
         }
@@ -31,8 +49,8 @@ class LinkedListJvm<T> : Iterable<T> {
         return this
     }
 
-    fun append(value: T){
-        if (isEmpty()){
+    fun append(value: T) {
+        if (isEmpty()) {
             push(value)
             return
         }
@@ -112,8 +130,64 @@ class LinkedListJvm<T> : Iterable<T> {
         return result
     }
 
-    override fun iterator(): Iterator<T> {
+    /** MutableIterable<T>*/
+
+    override fun iterator(): MutableIterator<T> {
         return LinkedListIterator(this)
+    }
+
+    /** Методы MutableCollection*/
+
+    override fun add(element: T): Boolean {
+        append(element)
+        return true
+    }
+
+    override fun addAll(elements: Collection<T>): Boolean {
+        for (element in elements) {
+            append(element)
+        }
+        return true
+    }
+
+    override fun clear() {
+        head = null
+        tail = null
+        size = 0
+    }
+
+    override fun remove(element: T): Boolean {
+        val iterator = iterator()
+        while (iterator.hasNext()) {
+            val item = iterator.next()
+            if (item == element) {
+                iterator.remove()
+                return true
+            }
+        }
+        return false
+    }
+
+    override fun removeAll(elements: Collection<T>): Boolean {
+        var result = false
+        for (item in elements) {
+            result = remove(item) || result
+        }
+        return result
+    }
+
+    // Удаляет все элементы списка кроме тех что переданы в качестве параметра
+    override fun retainAll(elements: Collection<T>): Boolean {
+        var result = false
+        val iterator = this.iterator()
+        while (iterator.hasNext()) {
+            val item = iterator.next()
+            if (!elements.contains(item)) {
+                iterator.remove()
+                result = true
+            }
+        }
+        return result
     }
 
 
