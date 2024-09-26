@@ -1,4 +1,4 @@
-package cs.data_structures.old.stack_queue
+package cs.data_structures.queue
 
 /**
  * Для реализации обеих структур данных может использоваться как LinkedList, так и ArrayList.
@@ -7,8 +7,8 @@ package cs.data_structures.old.stack_queue
  * Stack - LIFO структура данных.
  * Вместо HEAD и TAIL указателей используется только один TOP.
  * Вместо Length переменной используется height.
- * Добавление (push) и удаление(pop) первого элемента занимает время O(1). todo подумать о времени других реализаций этой структуры данных.
- * todo Узнать о реализациях через ArrayList
+ * Добавление (push) и удаление(pop) первого элемента занимает время O(1).
+ * todo подумать о времени других реализаций этой структуры данных.
  *
  * Queue - FIFO структура данных.
  * Вместо HEAD и TAIL указателей используется FIRST и LAST.

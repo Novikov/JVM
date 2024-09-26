@@ -1,3 +1,3 @@
-package cs.data_structures.old.linked_list
+package cs.data_structures.queue
 
 data class Node<T>(var value: T, var next: Node<T>? = null)

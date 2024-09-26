@@ -1,4 +1,4 @@
-package cs.data_structures.old.heap
+package cs.data_structures.xold.heap
 
 /**
  *  Внешне напоминает BinarySearch tree.

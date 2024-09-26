@@ -1,4 +1,4 @@
-package cs.data_structures.old.tree
+package cs.data_structures.xold.tree
 
 class BinarySearchTree {
     var root: Node<Int>? = null

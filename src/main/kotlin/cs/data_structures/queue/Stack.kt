@@ -1,4 +1,4 @@
-package cs.data_structures.old.stack_queue
+package cs.data_structures.queue
 
 class Stack<T> {
     private var top: Node<T>?

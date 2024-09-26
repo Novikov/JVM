@@ -1,4 +1,4 @@
-package cs.data_structures.old.graph
+package cs.data_structures.xold.graph
 
 
 class Graph {

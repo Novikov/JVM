@@ -1,4 +1,4 @@
-package cs.data_structures.old.tree
+package cs.data_structures.xold.tree
 
 /**
  * LinkedList это дерево, которое не разветвляется.
