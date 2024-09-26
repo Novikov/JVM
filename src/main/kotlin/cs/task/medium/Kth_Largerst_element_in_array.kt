@@ -1,4 +1,4 @@
-package cs.leetcode.medium
+package cs.task.medium
 
 import java.util.*
 

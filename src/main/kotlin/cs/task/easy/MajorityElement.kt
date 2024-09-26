@@ -1,4 +1,4 @@
-package cs.leetcode.easy
+package cs.task.easy
 
 import java.util.*
 

@@ -1,4 +1,4 @@
-package cs.leetcode.easy
+package cs.task.easy
 
 fun main() {
     val a1 = removeElement(intArrayOf(3, 2, 5), 3)

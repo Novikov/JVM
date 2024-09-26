@@ -1,4 +1,4 @@
-package cs.leetcode.easy
+package cs.task.easy
 
 fun main() {
     val numbers = arrayOf<Int>(1, 1, 2, 3)
