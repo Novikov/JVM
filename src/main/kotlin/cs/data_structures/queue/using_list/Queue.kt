@@ -1,9 +1,9 @@
 package cs.data_structures.queue.using_list
 
 internal class Queue<T> {
-    var first: Node<T>?
-    var last: Node<T>?
-    var length = 0
+    private var first: Node<T>?
+    private var last: Node<T>?
+    private var length = 0
 
     constructor(value: T) {
         val newNode = Node(value)
