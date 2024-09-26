@@ -16,3 +16,15 @@ fun removeElement(nums: IntArray, removingNumber: Int): Int {
     val remainingElements = index
     return remainingElements
 }
+
+fun countBits(n: Int): IntArray {
+    // Массив для хранения количества единиц для каждого числа
+    val result = IntArray(n + 1)
+
+    for (i in 1..n) {
+        // Используем формулу: result[i] = result[i / 2] + (i % 2)
+        result[i] = result[i shr 1] + (i and 1)
+    }
+
+    return result
+}

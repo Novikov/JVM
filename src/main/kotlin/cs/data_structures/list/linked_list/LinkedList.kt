@@ -1,5 +1,14 @@
 package cs.data_structures.list.linked_list
 
+/**
+ * Доступ по индексу O(n)
+ * Поиск O(n)
+ * Вставка в середину O(n) (За счет поиска нужной позиции. Иногда эту операцию выносят в отдельную функцию)
+ * Вставка в начало O(1)
+ * Вставка в середину O(1)
+ * Удаление аналогично вставке
+ * */
+
 class LinkedList<T> {
     private var head: Node<T>? = null
     private var tail: Node<T>? = null
