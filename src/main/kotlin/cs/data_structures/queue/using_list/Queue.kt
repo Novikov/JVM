@@ -1,4 +1,4 @@
-package cs.data_structures.queue
+package cs.data_structures.queue.using_list
 
 internal class Queue<T> {
     var first: Node<T>?
@@ -13,17 +13,14 @@ internal class Queue<T> {
     }
 
 
-    @JvmName("getFirstQueue")
     fun getFirst(): Node<T>? {
         return first
     }
 
-    @JvmName("getLastQueue")
     fun getLast(): Node<T>? {
         return last
     }
 
-    @JvmName("getLengthQueue")
     fun getLength(): Int {
         return length
     }
@@ -54,7 +51,6 @@ internal class Queue<T> {
         }
     }
 
-    @JvmName("makeEmptyQueue")
     fun makeEmpty() {
         first = null
         last = null

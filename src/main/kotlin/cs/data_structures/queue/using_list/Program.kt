@@ -1,4 +1,4 @@
-package cs.data_structures.queue
+package cs.data_structures.queue.using_list
 
 /**
  * Для реализации обеих структур данных может использоваться как LinkedList, так и ArrayList.

@@ -1,4 +1,4 @@
-package cs.data_structures.queue
+package cs.data_structures.queue.using_list
 
 class Stack<T> {
     private var top: Node<T>?
@@ -8,6 +8,26 @@ class Stack<T> {
         val newNode = Node(value)
         top = newNode
         height = 1
+    }
+
+    fun push(value: T) {
+        val newNode = Node(value)
+        if (height == 0) {
+            top = newNode
+        } else {
+            newNode.next = top
+            top = newNode
+        }
+        height++
+    }
+
+    fun pop(): Node<T>? {
+        if (height == 0) return null
+        val temp = top
+        top = top?.next
+        temp?.next = null
+        height--
+        return temp
     }
 
     fun getTop(): Node<T>? {
@@ -44,25 +64,5 @@ class Stack<T> {
         } else {
             printStack()
         }
-    }
-
-    fun push(value: T) {
-        val newNode = Node(value)
-        if (height == 0) {
-            top = newNode
-        } else {
-            newNode.next = top
-            top = newNode
-        }
-        height++
-    }
-
-    fun pop(): Node<T>? {
-        if (height == 0) return null
-        val temp = top
-        top = top?.next
-        temp?.next = null
-        height--
-        return temp
     }
 }
