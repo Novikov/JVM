@@ -9,4 +9,13 @@ fun main(){
     stack.pop()
     stack.pop()
     stack.toString()
+
+    val queue = Queue<Int>()
+    queue.enqueue(1)
+    queue.enqueue(2)
+    queue.enqueue(3)
+    println(queue.toString())
+    println("peek ${queue.peek()}") //без удаления
+    queue.dequeue()
+    println(queue.toString())
 }
