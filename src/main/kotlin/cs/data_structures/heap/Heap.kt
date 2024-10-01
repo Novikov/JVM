@@ -1,4 +1,4 @@
-package cs.data_structures.xold.heap
+package cs.data_structures.heap
 
 
 class Heap {

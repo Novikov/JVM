@@ -1,4 +1,4 @@
-package cs.data_structures.xold.linked_list
+package cs.data_structures.list.linked_list.second_linked_list
 
 class LinkedList<T> {
     private var head: Node<T>? = null

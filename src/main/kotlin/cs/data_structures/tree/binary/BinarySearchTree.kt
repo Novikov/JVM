@@ -1,26 +1,26 @@
-package cs.data_structures.xold.tree
+package cs.data_structures.tree.binary
 
 class BinarySearchTree {
-    var root: Node<Int>? = null
+    var root: BinaryNode<Int>? = null
 
     fun insert(value: Int): Boolean {
-        val newNode = Node(value)
+        val newBinaryNode = BinaryNode(value)
         if (root == null) {
-            root = newNode
+            root = newBinaryNode
             return true
         }
         var temp = root
         while (true) {
-            if (newNode.value == temp?.value) return false
-            if (newNode.value < temp?.value!!) {
+            if (newBinaryNode.value == temp?.value) return false
+            if (newBinaryNode.value < temp?.value!!) {
                 if (temp.left == null) {
-                    temp.left = newNode
+                    temp.left = newBinaryNode
                     return true
                 }
                 temp = temp.left
             } else {
                 if (temp.right == null) {
-                    temp.right = newNode
+                    temp.right = newBinaryNode
                     return true
                 }
                 temp = temp.right
