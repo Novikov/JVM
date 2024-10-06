@@ -1,8 +1,11 @@
 package cs.data_structures.tree.binary_from_book
 
-class BinaryNode<T>(val value: T) {
+class BinaryNode<T>(var value: T) {
     var leftChild: BinaryNode<T>? = null
     var rightChild: BinaryNode<T>? = null
+
+    val min: BinaryNode<T>?
+        get() = leftChild?.min ?: this
 
     override fun toString() = diagram(this)
 
@@ -26,7 +29,7 @@ class BinaryNode<T>(val value: T) {
         } ?: "${root}null\n"
     }
 
-    //Обход по порядку
+    //Обход по порядку элементов (числа 0, 1, 2, 3) даже если root 10
     fun traverseInOrder(visit: (T) -> Unit) {
         leftChild?.traverseInOrder(visit)
         visit(value)

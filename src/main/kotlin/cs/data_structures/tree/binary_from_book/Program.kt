@@ -17,6 +17,8 @@ fun main(){
     //println(seven.toString())
 
     tree.traverseInOrder { println(it) }
+
     tree.traversePreOrder { println(it) }
+
     tree.traversePostOrder { println(it) }
 }
