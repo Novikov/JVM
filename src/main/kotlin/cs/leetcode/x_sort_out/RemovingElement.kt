@@ -1,4 +1,4 @@
-package cs.leetcode.sort_out
+package cs.leetcode.x_sort_out
 
 fun main() {
     val a1 = removeElement(intArrayOf(3, 2, 5), 3)
