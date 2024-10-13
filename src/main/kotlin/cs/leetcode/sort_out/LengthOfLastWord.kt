@@ -1,4 +1,4 @@
-package cs.task.easy
+package cs.leetcode.sort_out
 
 
 fun main() {

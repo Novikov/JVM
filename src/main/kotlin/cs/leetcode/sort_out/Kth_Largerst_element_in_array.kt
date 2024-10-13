@@ -1,4 +1,4 @@
-package cs.task.medium
+package cs.leetcode.sort_out
 
 import java.util.*
 

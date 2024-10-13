@@ -1,4 +1,4 @@
-package cs.task.easy
+package cs.leetcode.sort_out
 
 fun main() {
     val numbers = arrayOf<Int>(1, 1, 2, 3)

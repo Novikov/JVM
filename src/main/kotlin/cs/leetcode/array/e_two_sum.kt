@@ -1,4 +1,4 @@
-package cs.task.array
+package cs.leetcode.array
 
 /**
  * Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
@@ -37,7 +37,7 @@ fun main() {
     twoSum.forEach { println(it) }
 }
 
-// Мое решениек проходоми
+// N2 time
 fun twoSum(nums: IntArray, target: Int): IntArray {
     for (first in nums.indices) {
         for (second in nums.indices) {
