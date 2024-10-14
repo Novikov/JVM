@@ -8,7 +8,11 @@ import kotlinx.coroutines.launch
 fun main() {
 //    inlineExample1()
 //    inlineExample2()
-    inlineExample3()
+//    inlineExample3()
+
+//    noInlineExample()
+
+    crossInlineExample()
 }
 
 /**
@@ -63,6 +67,44 @@ fun f(){
     e{ "HelloFrom c "}
 }
 
+/**
+ * ---------------------------------------------------------------------------------------------------------------------
+ * Сама лябда не инлайнится, а тело функции встраивается в место вызова
+ *  */
+fun noInlineExample() {
+    g()
+}
+
+inline fun h(noinline text: () -> String) {
+    println(text.invoke())
+}
+
+fun g(){
+    println("Hello from g")
+    h{ "HelloFrom h "}
+}
+
+/**
+ * ---------------------------------------------------------------------------------------------------------------------
+ *
+ **/
+
+fun crossInlineExample(){
+
+}
+
+inline fun a1(text: () -> String) {
+    val str = text()
+    println(str)
+}
+
+fun b1(){
+    println("Hello from b1")
+    a1 {
+        return @b1
+        "Hello from a"//
+    }
+}
 
 /**
  * Отсутствует возможность вызывать suspend функции внутри lambda
