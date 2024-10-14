@@ -13,6 +13,8 @@ fun main() {
 //    noInlineExample()
 
     crossInlineExample()
+
+//    coroutineExample()
 }
 
 /**
@@ -44,9 +46,9 @@ fun c(text: () -> String) {
     println(text)
 }
 
-fun d(){
+fun d() {
     println("Hello from d")
-    c{ "HelloFrom c "}
+    c { "HelloFrom c " }
 }
 
 /**
@@ -62,9 +64,9 @@ inline fun e(text: () -> String) {
     println(text.invoke())
 }
 
-fun f(){
+fun f() {
     println("Hello from d")
-    e{ "HelloFrom c "}
+    e { "HelloFrom c " }
 }
 
 /**
@@ -79,37 +81,49 @@ inline fun h(noinline text: () -> String) {
     println(text.invoke())
 }
 
-fun g(){
+fun g() {
     println("Hello from g")
-    h{ "HelloFrom h "}
+    h { "HelloFrom h " }
 }
 
-/**
- * ---------------------------------------------------------------------------------------------------------------------
- *
- **/
+/*** ---------------------------------------------------------------------------------------------------------------------
+Локальный ретерн: Выход из текущей функции. Можно использовать в любых функциях.
+Не локальный ретерн: Выход из родительской функции, в которой была вызвана лямбда. Поддерживается только в inline функциях.
 
-fun crossInlineExample(){
+crossinline — ключевое слово, которое используется для указания, что лямбда-выражение не может содержать нелокальных return, даже если оно передано в inline-функцию.
 
+Когда мы передаем лямбда-выражение в функцию в качестве параметра, мы можем использовать оператор return внутри лямбды,
+чтобы выйти из цикла или функции, в которой вызывается лямбда. Однако, если мы передаем лямбда-выражение в inline-функцию,
+код лямбда-выражения может быть вставлен прямо в место вызова функции. В этом случае, если в лямбде используется оператор return,
+это может привести к выходу из внешней функции, что не всегда желательно.
+
+более подробное объяснение тут https://www.youtube.com/watch?v=a2jPA_h9ltM&t=195s
+**/
+
+fun crossInlineExample() {
+    doSomething()
 }
 
-inline fun a1(text: () -> String) {
-    val str = text()
-    println(str)
-}
-
-fun b1(){
-    println("Hello from b1")
-    a1 {
-        return @b1
-        "Hello from a"//
+fun doSomething(){
+    println("Before action")
+    firstAction {
+        return@doSomething // если будет использоваться crossInline то компилятор запретит делать нелокальный ретерн
+        "Hello from a"
     }
+}
+
+inline fun firstAction(crossinline text: () -> String) { // сотри crossInline и посмотри что изменится
+    secondAction { text() }
+}
+
+fun secondAction(text: () -> String){
+    println("??? ${text}")
 }
 
 /**
  * Отсутствует возможность вызывать suspend функции внутри lambda
  * */
-fun coroutineExample2() {
+fun coroutineExample() {
     val list = listOf(1, 2, 3, 4, 5)
     CoroutineScope(Dispatchers.Default).launch {
         delay(1000)
