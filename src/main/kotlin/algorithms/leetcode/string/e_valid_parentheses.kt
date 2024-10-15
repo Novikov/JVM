@@ -8,22 +8,20 @@ fun main(){
 
 fun isValid(s: String): Boolean {
     //Делаем таблицу соответствий
-    val bracketsMap = HashMap<Char, Char>()
-    bracketsMap.put('{', '}')
-    bracketsMap.put('(', ')')
-    bracketsMap.put('[', ']')
+    val bracketMap = mapOf('(' to ')', '{' to '}', '[' to ']')
+    val stack = mutableListOf<Char>()
 
-    var isValid = true
-    for (leftIndex in 0 until s.lastIndex/2) {
-        val rightIndex = s.lastIndex - leftIndex
-        val leftBracket = s[leftIndex]
-        val rightBracketExpected = bracketsMap.get(leftBracket)
-        val currentRightBracket = s[rightIndex]
-        if (rightBracketExpected != currentRightBracket) {
-            isValid = false
-            break
+    for (char in s) {
+        if (bracketMap.containsKey(char)) {// Если это открывающая скобка, добавляем в стек
+            stack.add(char)
+        } else if (bracketMap.containsValue(char)) { // Если это закрывающая скобка
+            if (stack.isEmpty()) return false// проверяем на пустоту
+
+            val lastBracketInStack = stack.removeAt(stack.size - 1) // берем последний элемент стека предварительно удалив его
+            val isBracketValid = bracketMap[lastBracketInStack] == char // проверяем что соответствие по открытой скобке (закрытая скобка) равно текущей закрытой кнопке
+            if (!isBracketValid) return false
         }
     }
-
-    return isValid
+    // Если стек пуст, все скобки закрыты корректно
+    return stack.isEmpty()
 }

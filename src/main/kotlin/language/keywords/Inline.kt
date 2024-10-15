@@ -107,12 +107,12 @@ fun crossInlineExample() {
 fun doSomething(){
     println("Before action")
     firstAction {
-        return@doSomething // если будет использоваться crossInline то компилятор запретит делать нелокальный ретерн
+       // return@doSomething // если будет использоваться crossInline то компилятор запретит делать нелокальный ретерн
         "Hello from a"
     }
 }
 
-inline fun firstAction(crossinline text: () -> String) { // сотри crossInline и посмотри что изменится
+inline fun firstAction(crossinline text: () -> String) { // сотри crossInline и посмотри как это повлияет на закоменченый return выше
     secondAction { text() }
 }
 
