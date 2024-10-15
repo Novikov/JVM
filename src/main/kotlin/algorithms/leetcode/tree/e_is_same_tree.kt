@@ -14,8 +14,3 @@ fun isSameTree(p: TreeNode?, q: TreeNode?): Boolean {
     // Сравниваем поддеревья
     return isSameTree(p.left, q.left) && isSameTree(p.right, q.right)
 }
-
-class TreeNode(var `val`: Int) {
-   var left: TreeNode? = null
-    var right: TreeNode? = null
-}
