@@ -1,5 +1,7 @@
 package algorithms.leetcode.linked_list
 
+import algorithms.leetcode.common_data.ListNode
+
 //https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 
 fun main(){
@@ -16,8 +18,4 @@ fun deleteDuplicates(head: ListNode?): ListNode? {
         }
     }
     return head
-}
-
-class ListNode(var `val`: Int) {
-    var next: ListNode? = null
 }
