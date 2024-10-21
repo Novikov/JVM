@@ -1,5 +1,7 @@
 package language
 
+import kotlin.concurrent.thread
+
 // lambda, lambda with receiver, function0, типы лямбд, утечки пямяти
 fun main() {
 //    lambdaExample1()
@@ -9,7 +11,8 @@ fun main() {
 //    lambdaExample5()
 //    lambdaExample6()
 //    lambdaExample7()
-    lambdaExample8()
+//    lambdaExample8()
+    lambdaExample9()
 }
 
 /**
@@ -181,7 +184,7 @@ inline fun myNoInlineFunction(noinline action: () -> Unit) {
 
 inline fun myCrossInlineFunction(crossinline action: () -> Unit) {
     myFunction {
-        action() // Если убрать crossinline то тут будет ошибка
+        action() // Если убрать crossinline то тут будет ошибка. Мы не можем передавать лямбду на этаж ниже без гарантии отсутствия nonlocal return
     }
     println("Inside MyNoInlineFunction")
 }
@@ -235,10 +238,39 @@ fun lambdaExample8() {
 
 /**
  * Когда использовать noInline, а когда crossInline?
- *  noInline отключает оптимизацию лямбды
- *  crossinline means we would like to inline if possible, but we can’t guarantee we can do it or we can only inline it partially
+ *  noInline отключает non-local return и дает гарантию что лямбда не заинлайнится
+ *  crossinline отключает non-local return и заинлайнит лямбду если посчитает это нужным
+ *  в примерах ниже лямбды не инлайнятся и экземпляр классов только во втором случаве это это экземпляр не интерфейса с имплементацией, а конкретного класса
+ * */
+
+fun lambdaExample9() {
+    myNoInlineFunction {
+        println("Не локальный возврат из лямбды 1")
+//        return // доступ к non local return есть
+    }
+
+    myCrossInlineFunction {
+        println("Не локальный возврат из лямбды 2")
+        //return запрет
+    }
+}
+
+/**
+ * Когда стоит использовать inline
+ * 1)Функции высшего порядка, которые принимают лямбды: Если функция принимает лямбду, и её вызывают много раз, инлайнинг может улучшить производительность, избегая накладных расходов на вызов функции.
+ * inline fun repeatAction(times: Int, action: () -> Unit) {
+ *     for (i in 1..times) {
+ *         action() // Лямбда будет инлайнина
+ *     }
+ * }
  *
+ * 2)Функции, где нужно использовать non-local return: Если вам нужно выйти из внешней функции, инлайнинг позволяет это сделать.
+ *  inline fun process(action: () -> Unit) {
+ *     action() // Можно использовать return
+ * }
  *
- * todo доработать https://stackoverflow.com/questions/38827186/what-is-the-difference-between-crossinline-and-noinline-in-kotlin
+ * Когда не стоит использовать inline
+ * 1)Большие функции: Если функция слишком большая, инлайнинг может привести к увеличению размера кода и ухудшению производительности из-за увеличения объёма машинного кода.
+ * 2)Функции, которые не вызываются часто: Если функция вызывается лишь несколько раз, накладные расходы на инлайнинг могут быть не оправданы.
  * */
 
