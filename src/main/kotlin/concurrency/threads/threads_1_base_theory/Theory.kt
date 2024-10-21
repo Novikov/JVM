@@ -1,12 +1,16 @@
 package concurrency.threads.threads_1_base_theory
 
-import concurrency.threads.threads_1_base_theory.utils.Service
-import concurrency.threads.threads_1_base_theory.utils.ThreadCounterWorker
+import concurrency.threads.threads_1_base_theory.utils.*
 
 
 fun main(){
 //    consistentBehaviourExample()
-    concurrencyBehaviourExample()
+
+//    concurrencyBehaviourExample()
+//    concurrencyBehaviourExample2()
+//    concurrencyBehaviourExample3()
+//    concurrencyBehaviourExample4()
+    concurrencyBehaviourExample5()
 }
 
 /**
@@ -70,4 +74,86 @@ fun concurrencyBehaviourExample(){
 
     tcw1.start()
     tcw2.start()
+
+    // Помни что у thread можно запустить метод run который отработает в ui потоке
+    // tcw1.run() компилятор подсказывает что делать этого не надо
+}
+
+/**
+ * Тоже самое только уже через Runable
+ * */
+fun concurrencyBehaviourExample2(){
+    val tcw1 = RunnableCounterWorker("A", 15)
+    val tcw2 = RunnableCounterWorker("B", 15)
+
+    val thread1 = Thread(tcw1)
+    val thread2 = Thread(tcw2)
+
+    thread1.start()
+    thread2.start()
+}
+
+/**
+ * Пример блокирующей операции
+ *
+ * Метод Thread.sleep(long millis) в Java обычно не выбрасывает исключения, кроме одного случая.
+ * Вот его подробности:
+ *
+ * Исключение InterruptedException
+ * Когда: Thread.sleep() может выбросить InterruptedException, если поток был прерван во время ожидания.
+ * Как: Это происходит, когда другой поток вызывает метод interrupt() на текущем потоке. Если поток находится
+ * в состоянии сна, вызов interrupt() приведет к выбросу InterruptedException, и поток выйдет из состояния сна.
+ * todo добавить пример с InterruptedException
+ * */
+fun concurrencyBehaviourExample3(){
+    val tcw1 = ThreadWithSleepCounterWorker("A", 15)
+    val tcw2 = ThreadWithSleepCounterWorker("B", 15)
+
+    val thread1 = Thread(tcw1)
+    val thread2 = Thread(tcw2)
+
+    thread1.start()
+    thread2.start()
+}
+
+
+/**
+ * Демонстрация работы join() метода
+ * Главный поток освободится только после отработки двух дополнительных потоков
+ * И только после этого распечатается Process is finished!!!
+ *
+ * Этот метод так же как и в примере выше со sleep может бросить exception в случае вызова
+ * другим потоком interrupt() на текущем потоке.
+ * */
+fun concurrencyBehaviourExample4() {
+    val tcw1 = ThreadCounterWorker("A", 15)
+    val tcw2 = ThreadCounterWorker("B", 1000)
+
+    // МНОГОПОТОЧНАЯ ОБРАБОТКА
+    tcw1.start()
+    tcw2.start()
+
+    try {
+        tcw1.join()
+      //  tcw2.join() всеровно завершится
+    } catch (e: InterruptedException) {
+        throw RuntimeException(e)
+    }
+
+    println("Process is finished!!!")
+}
+
+/**
+ *
+ * */
+fun concurrencyBehaviourExample5() {
+    val tcw1 = ThreadCounterWithPriorityWorker("A", 5, 10)
+    val tcw2 = ThreadCounterWithPriorityWorker("B", 5, 10)
+
+    // МНОГОПОТОЧНАЯ ОБРАБОТКА
+    tcw1.start()
+    tcw2.start()
+
+    // НЕ ГАРАНТИРУЕТСЯ ПОРЯДОК
+    println("Process is finished!!!")
 }

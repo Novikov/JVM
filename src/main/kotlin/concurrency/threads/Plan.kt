@@ -1,6 +1,9 @@
+package concurrency.threads
+
 /**
  * Как добиться парралельного выполнения программы с помощью ForkJoinPool?
- Что такое suspendCoroutine и continuation
+Что такое suspendCoroutine и continuation
+ Добавить пример с InterruptedException
  *   + Расписать почему suspend функцию можно вызвать только из suspend функции или корутины?
  * 0)Конспект по многопоточности, deadlock
  * 1)вызов корутин на разных скоуп. Пример Миши на runBlocking
