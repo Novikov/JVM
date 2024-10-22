@@ -1,6 +1,7 @@
 package concurrency.threads
 
 /**
+ * Что такое блокирующая операция и почему не daemon поток завершается до конца а корутина нет.
  * Как добиться парралельного выполнения программы с помощью ForkJoinPool?
 Что такое suspendCoroutine и continuation
  Добавить пример с InterruptedException

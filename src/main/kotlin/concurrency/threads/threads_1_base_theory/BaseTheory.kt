@@ -10,7 +10,8 @@ fun main(){
 //    concurrencyBehaviourExample2()
 //    concurrencyBehaviourExample3()
 //    concurrencyBehaviourExample4()
-    concurrencyBehaviourExample5()
+//    concurrencyBehaviourExample5()
+    concurrencyBehaviourExample6()
 }
 
 /**
@@ -144,11 +145,17 @@ fun concurrencyBehaviourExample4() {
 }
 
 /**
+ * Установка приоритета не влияет на приоритет. Операционная система решает сама.
  *
+ * -Установка приоритета потоков в Java действительно может не всегда работать так, как ожидается. Вот несколько причин, почему это происходит:
+ * -Платформозависимость: Реализация управления потоками в Java зависит от операционной системы. Не все ОС следуют указаниям по приоритетам потоков, и некоторые могут игнорировать эти установки.
+ * -Модель планирования: Java использует планировщик потоков ОС, который может иметь свои собственные правила и алгоритмы. Приоритеты потоков в Java могут не совпадать с приоритетами на уровне ОС.
+ * -Необходимость: В большинстве приложений нет строгой необходимости в тонком управлении приоритетами потоков. Приоритеты могут быть полезны для обозначения важности потоков, но многие задачи можно решить без их использования.
+ * -Сложности с отладкой: Изменение приоритетов может привести к сложностям с отладкой и производительностью, особенно если потоки начинают конкурировать за ресурсы.
  * */
 fun concurrencyBehaviourExample5() {
     val tcw1 = ThreadCounterWithPriorityWorker("A", 5, 10)
-    val tcw2 = ThreadCounterWithPriorityWorker("B", 5, 10)
+    val tcw2 = ThreadCounterWithPriorityWorker("B", 5, 1)
 
     // МНОГОПОТОЧНАЯ ОБРАБОТКА
     tcw1.start()
@@ -156,4 +163,20 @@ fun concurrencyBehaviourExample5() {
 
     // НЕ ГАРАНТИРУЕТСЯ ПОРЯДОК
     println("Process is finished!!!")
+}
+
+/**
+ * Daemon потоки
+ * Поток всегда завершает выполнение
+ * */
+fun concurrencyBehaviourExample6() {
+    val tcw1 = ThreadCounterWithDaemonFlagWorker("A", 1000, true)
+    val tcw2 = ThreadCounterWithDaemonFlagWorker("B", 100, false)
+
+    // МНОГОПОТОЧНАЯ ОБРАБОТКА
+    tcw1.start()
+    tcw2.start()
+
+    // НЕ ГАРАНТИРУЕТСЯ ПОРЯДОК
+    println("Process is finished!!! ")
 }
