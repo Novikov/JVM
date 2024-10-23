@@ -12,3 +12,5 @@ fun reifiedExample(){
 inline fun <reified T>T.printClassName(){
     println(T::class.simpleName)
 }
+
+//https://www.youtube.com/watch?v=vfewyonYXOw&list=PLlb7e2G7aSpQith1Z6xRpU8jFPgkh_Gvz&index=4
