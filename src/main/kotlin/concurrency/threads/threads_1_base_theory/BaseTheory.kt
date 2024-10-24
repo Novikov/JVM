@@ -6,12 +6,12 @@ import concurrency.threads.threads_1_base_theory.utils.*
 fun main(){
 //    consistentBehaviourExample()
 
-//    concurrencyBehaviourExample()
+    concurrencyBehaviourExample()
 //    concurrencyBehaviourExample2()
 //    concurrencyBehaviourExample3()
 //    concurrencyBehaviourExample4()
 //    concurrencyBehaviourExample5()
-    concurrencyBehaviourExample6()
+  //  concurrencyBehaviourExample6()
 }
 
 /**
@@ -67,6 +67,7 @@ fun consistentBehaviourExample(){
  * Здесь 2 класса будут печатать в разнобой
  * Это именно многопоточное, а не парралельное выполнение.
  * Для достижения парралельного выполнения необходимо использовать инструменты наподобие ForkJoinPool
+ * Ниже один поток прирывается, не забудь закоментить
  * */
 
 fun concurrencyBehaviourExample(){
@@ -75,6 +76,7 @@ fun concurrencyBehaviourExample(){
 
     tcw1.start()
     tcw2.start()
+    tcw2.interrupt() /** Устанавливает флаг прерывания */
 
     // Помни что у thread можно запустить метод run который отработает в ui потоке
     // tcw1.run() компилятор подсказывает что делать этого не надо

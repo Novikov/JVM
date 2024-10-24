@@ -7,7 +7,7 @@ class ThreadCounterWorker(
 
     override fun run() {
         var counter = 0
-        while (counter <= range) {
+        while (counter <= range && !currentThread().isInterrupted) {
             println(name + ": " + counter++)
         }
     }

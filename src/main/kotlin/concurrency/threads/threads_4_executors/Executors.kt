@@ -2,6 +2,11 @@ package concurrency.threads.threads_4_executors
 
 import concurrency.threads.threads_4_executors.utils.GenerateRandomIntegerTask
 import concurrency.threads.threads_4_executors.utils.GenerateRandomIntegerWithIdTask
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -9,18 +14,22 @@ import java.util.concurrent.TimeUnit
 fun main() {
     //executorsExample1()
     //executorsExample2()
-    //schedulersExample3()
-    schedulersExample4()
+    //executorsExample3()
+    //executorsExample4()
+    executorsExample5()
 }
 
 /**
- * Executor Framework позволяет легко оперировать десятками и сотнями потоков
- * Концепция пула потоков
+ * Концепция пула потоков:
+ * Создание: Вместо создания нового потока для каждой задачи, пул потоков создаёт фиксированное количество потоков (или динамически управляет их количеством) и использует их для выполнения задач.
+ * Переиспользование: Потоки из пула могут повторно использоваться для выполнения различных задач, что снижает накладные расходы на создание и уничтожение потоков.
  *
  * Преимущества
  * -Возможность переиспользовать уже созданные потоки
  * -Меньшие затраты по памяти
  * -Позволяют планировать и исполнять задачи
+ *
+ * Executor/ExecutorService это реализация концепции ThreadPool
  * */
 
 /**
@@ -51,7 +60,8 @@ fun executorsExample1() {
 }
 
 /**
- *
+ * FixedThreadPool создает фиксированное число потоков в пуле. Чаще всего это, это количество ядер процессора - 1
+ * Задачи накаплитваются в LinkedBlockingQueue
  * */
 fun executorsExample2() {
     val start = System.currentTimeMillis()
@@ -81,9 +91,9 @@ fun executorsExample2() {
 }
 
 /**
- *ScheduledThreadPool позволяет задавать таймаут начала выполнения операции
+ *  ScheduledThreadPool позволяет выполнять задачи на регулярной основе или с отложенным стартом
  * */
-fun schedulersExample3() {
+fun executorsExample3() {
     val cores = Runtime.getRuntime().availableProcessors()
     val start = System.currentTimeMillis()
     val executor = Executors.newScheduledThreadPool(cores - 1)
@@ -110,7 +120,7 @@ fun schedulersExample3() {
  * CachedThreadPool
  * Не задаем число потоков, а делегируем это самому ExecutorService который будет менять это число в зависимости от нагрузки
  * */
-fun schedulersExample4() {
+fun executorsExample4() {
     val start = System.currentTimeMillis()
     val executorService = Executors.newCachedThreadPool()
     try {
@@ -123,4 +133,49 @@ fun schedulersExample4() {
         val duration = end - start
         println("Processed in: $duration ms")
     }
+}
+
+
+/**
+ * Пример выполнения Url запроса
+ * */
+fun executorsExample5() {
+    // Создание пула потоков
+    val executorService: ExecutorService = Executors.newSingleThreadExecutor()
+
+    // URL для запроса
+    val urlString = "https://jsonplaceholder.typicode.com/posts/1"
+
+    // Отправка запроса на сервер
+    executorService.submit {
+        try {
+            // Выполнение HTTP-запроса
+            val url = URL(urlString)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+
+            // Получение ответа от сервера
+            val responseCode = connection.responseCode
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                val reader = BufferedReader(InputStreamReader(connection.inputStream))
+                val response = StringBuilder()
+                var inputLine: String?
+
+                while (reader.readLine().also { inputLine = it } != null) {
+                    response.append(inputLine)
+                }
+                reader.close()
+
+                // Логирование ответа
+                println("Response: ${response.toString()}")
+            } else {
+                println("GET request not worked. Response Code: $responseCode")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    // Завершение работы пула
+    executorService.shutdown()
 }
