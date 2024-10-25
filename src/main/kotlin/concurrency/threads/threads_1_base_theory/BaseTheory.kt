@@ -106,7 +106,6 @@ fun concurrencyBehaviourExample2(){
  * Когда: Thread.sleep() может выбросить InterruptedException, если поток был прерван во время ожидания.
  * Как: Это происходит, когда другой поток вызывает метод interrupt() на текущем потоке. Если поток находится
  * в состоянии сна, вызов interrupt() приведет к выбросу InterruptedException, и поток выйдет из состояния сна.
- * todo добавить пример с InterruptedException
  * */
 fun concurrencyBehaviourExample3(){
     val tcw1 = ThreadWithSleepCounterWorker("A", 15)
