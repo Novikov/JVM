@@ -1,58 +1,68 @@
 package concurrency.libs.coroutines
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
+import kotlin.coroutines.Continuation
 import kotlin.coroutines.suspendCoroutine
 
-suspend fun main(){
-    suspendApiCallExample()
+fun main() {
+    underTheHoodExample()
 }
 
 /**
- * Тут расписать что такое Continuation и suspendCoroutine функция ||| ДОРАБОТАТЬ
- * Сейчас понимание следующее suspendCoroutine - это особый билдер для API. Например его могут использовать
- * разработчики Retrofit для того чтобы сделать свои методы suspend.
+ * На каждый вызов корутины (suspend функции через корутин bilder в байткоде) создается:
+ * 1. Класс-обертка для корутины
+ * Когда вы объявляете suspend функцию или используете корутинный билдер (например, launch или async),
+ * компилятор создает класс-обертку, который реализует интерфейс Continuation.
+ * Этот класс содержит состояние корутины и необходимую информацию для её возобновления.
  *
- * Внутри coroutineScope есть объект continuation который используется для возобновления работы корутины, но
- * startAndroid говорит что это класс в который конвертнется suspend функция в Java. Я смотрел байткод и такого не увидел.
+ * 2. Метод invokeSuspend
+ * Каждая suspend функция генерирует метод invokeSuspend, который отвечает за выполнение логики функции,
+ * включая управление её состоянием. Этот метод включает в себя логику для переключения между состояниями,
+ * что может выглядеть как switch-case конструкция, в зависимости от количества точек приостановки в функции.
+ *
+ * 3.Coroutine context
+ * При создании корутины также создается объект CoroutineContext, который содержит информацию о контексте
+ * выполнения (например, диспетчеры, родительские корутины и так далее).
+ *
+ * Под декомпиляцией мы ожидаем получить нечто похожее на это:
+ * public final Object invokeSuspend(Object $result) {
+ *     switch (label) {
+ *         case 0:
+ *             label = 1;
+ *             return delay(1000);
+ *         case 1:
+ *             System.out.println("Завершено!");
+ *             return Unit.INSTANCE;
+ *     }
+ * }
+ *
+ * По идее критерием разбиения на case конструкции являются точки где функция может быть приостановлена или блоки обработки ошибок и исключений
+ * Но при просмотре байткода код после delay вообще уходит из switch ниже. Т.е компилятор сам оптимизирует этот код
+ *
+ * Почему нельзя вызывать suspend функцию в обычной функции?
+ * Для корректного выполнения suspend функции нужен Coroutine context и класс обертка который реализует Continuation с методом invokeSuspend
+ * Этого можно добиться только если вызывать suspend функцию внутри Coroutine builder.
  * */
 
-/**
- * Способы реализации асинхронщины в Android:
- * 1)Callback функции
- * 2)RX
- * 3)Croroutines
- *
- * Иногда возникает необходимость обернуть 1 подход в suspend функции. Такие задачи часто встречаются у разработчиков API которые хотят подружить его с
- * корутинами и обернуть в suspend функции. Для этого необходимо получить continuation и не забыть возобновить работку корутины иначе она потеряется.
- * */
-
-suspend fun suspendApiCallExample() {
-    val scope = CoroutineScope(Dispatchers.Unconfined)
-
-    scope.launch() {
-        println("start coroutine ${Thread.currentThread().name}")
-        val data = getDataFromApi()
-        println("end coroutine ${Thread.currentThread().name}")
+fun underTheHoodExample() = runBlocking{
+    launch {
+        exampleFunction()
     }
-
-    delay(2000)
 }
 
-suspend fun getDataFromApi(): Int = suspendCoroutine {
-    println("suspend function, start")
-    thread {
-        println("suspend function, background work")
-        TimeUnit.MILLISECONDS.sleep(1000)
-//        it.resume(5) // Возобновление работы корутины. Если не вызвать то корутина не завершится
-    }
+suspend fun exampleFunction() {
+    println("Начало")
+    exampleFunction2()
+    delay(1000)
+    println("Завершено!")
 }
 
-// TODO:  Расписать почему suspend функцию можно вызвать только из suspend функции или корутины?
-/** Подсказка. В работе я всегда вызываю функции Retrofit, но не вижу всей картины.
- * Нужно сделать запрос в сеть без retrofit и тогда все будет ясно.
- * */
+suspend fun exampleFunction2(){
+    println("Начало 2 функции")
+    println("Конец 2 функции")
+}

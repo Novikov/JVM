@@ -4,30 +4,66 @@ import kotlinx.coroutines.*
 import kotlin.system.measureTimeMillis
 
 suspend fun main() {
-//    coroutineScopeExample()
-//    coroutineScopeExample2()
+  //  coroutineScopeExample()
+   // coroutineScopeExample2()
 //    coroutineScopeExample3()
-//    coroutineScopeExample3_1()
-//    coroutineScopeExample4()
+   // coroutineScopeExample3_1()
+   // coroutineScopeExample4()
 //    coroutineScopeExample5()
-    coroutineScopeExample6()
-//    coroutineScopeExample7()
+ //   coroutineScopeExample6()
+    coroutineScopeExample7()
 }
 
 /**
- * Любая корутина может выполняться только на coroutineScope. Способы получения scope в 11.Scope_Builders.
- * Scope имеет контекст состоящий из 4 параметров: Job, Dispatcher, ErrorHandler, CoroutineName.
+ * Любая корутина может выполняться только на coroutineScope.
+ * Coroutine builders — это функции, которые создают и запускают корутины. Они определяют, как будет выполняться корутина.
+ *  К основным coroutine builders относятся:
+ *
+ * launch: Запускает новую корутину, которая не возвращает результат. Используется для выполнения фоновых задач.
+ * async: Запускает новую корутину и возвращает объект Deferred, который позволяет получить результат выполнения корутины.
+ * runBlocking: Блокирует текущий поток, пока не завершится выполнение корутины. Обычно используется в тестах или в корне программы.
+ *
+ *
+ * Scope содержит внутри себя контекст состоящий из 4 параметров: Job, Dispatcher, ErrorHandler, CoroutineName.
+ *
+ * Основные scope builders:
+ * coroutineScope: Создает новый корутинный контекст, который может содержать дочерние корутины. Если одна из дочерних корутин завершится с ошибкой, остальные будут отменены.
+ * supervisorScope: Похож на coroutineScope, но ошибки в одной корутине не приводят к отмене других корутин в этом скоупе.
+ *
+ *
  * */
 
 /**
- * Корутина может выполняться только в определенной области корутины (coroutine scope).
- * Область корутин представляет пространство, в рамках которого действуют корутины, она имеет определенный жизненный цикл и
- * сама управляет жизненным циклом создаваемых внутри нее корутин.
+ * Основные термины
  *
- * Scope вершина иерархии связи корутин через job. Scope так же имеет свой job.
+ * Для запуска корутины необходимы:
+ * 1)coroutine scope
+ * 2)coroutine builder
+ * 3)suspend function с выполняемым кодом
  *
- * И для создания области корутин в Kotlin может использоваться ряд функций, которые создают объект интерфейса CoroutineScope.
- * Одной из функций является coroutineScope. Она может применяться к любой функции, например:
+ * Coroutine scope содержит внутри себя coroutineContext
+ * coroutine scope можно создать с помощью scope builders:
+ * +coroutineScope - Создает новый корутинный скоуп, который может содержать дочерние корутины. Если одна из дочерних корутин завершится с ошибкой, все остальные будут отменены
+ * +supervisorScope - Похож на coroutineScope, но ошибки в одной корутине не приводят к отмене других корутин в этом скоупе. Это полезно, когда вам нужно, чтобы несколько корутин работали независимо
+ * +globalScope - Предоставляет глобальный скоуп для корутин. Корутин в этом скоупе будет жить до завершения приложения. Используйте его с осторожностью, так как он не связан с жизненным циклом компонентов, например, Activity или ViewModel в Android.
+ *
+ * После получения coroutine scope - нам необходимо использовать coroutine builder для запуска корутины
+ * он будет работать только при наличии scope
+ * существует несколько coroutine builders:
+ * +launch
+ * +asynch
+ * +runblocking
+ * +withContext
+ *
+ * Каждый coroutineBuilder возвращает объект Job
+ * Через этот объект можно управлять корутиной (например отменять ее) или следить за ее состоянием
+ * Job один из элементов которые состовляют CoroutineContext. Job есть как у coroutine builders так и scope builders.
+ * Через этот объект они связываются
+ *
+ * Помимо Job существуют доп параметры CoroutineContext
+ * Dispatcher - Указывает, на каком потоке или потоке пуле будет выполняться корутина. Например, Dispatchers.IO для ввода-вывода, Dispatchers.Main для работы с UI в Android, и Dispatchers.Default для фоновых вычислений.
+ * CoroutineName: позволяет присвоить корутине имя для удобства отладки.
+ * CoroutineExceptionHandler: позволяет обрабатывать необработанные исключения в корутинах.
  * */
 
 suspend fun coroutineScopeExample() {
@@ -113,12 +149,12 @@ fun coroutineScopeExample4() {
         val job1 = launch {
             println("Start task 1")
             delay(300)
-            throw Exception()  // тут это добавлено, чтобы сравнить поведение с примером 6
+           // throw Exception()  // тут это добавлено, чтобы сравнить поведение с примером 6
             println("End task 1")
         }
         val job2 = launch {
             println("Start task 2")
-            delay(200)
+            delay(500)
             println("End task 2")
         }
 

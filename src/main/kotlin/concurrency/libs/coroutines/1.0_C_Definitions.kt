@@ -5,11 +5,11 @@ import kotlin.system.measureTimeMillis
 
 suspend fun main() {
 //    routineExample()
-//    coroutineExample()
-//    threadSwitchingExample()
-//    suspendExample()
-//    asynchExample()
-    blockingCoroutinesExample()
+    coroutineExample()
+ //   threadSwitchingExample()
+ //  suspendExample()
+ //   asynchExample()
+ //   blockingCoroutinesExample()
 }
 
 /**
