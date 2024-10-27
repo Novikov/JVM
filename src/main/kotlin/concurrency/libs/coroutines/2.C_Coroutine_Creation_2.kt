@@ -5,14 +5,14 @@ import kotlinx.coroutines.*
 suspend fun main() {
     /**launch*/
   //  launchExample1()
-    launchExample2()
- //   launchExample3()
-//    launchExample4()
-//    launchExample5()
+  //  launchExample2()
+  //  launchExample3()
+  //  launchExample4()
+   // launchExample5()
 //    launchExample6()
 
     /**async*/
-//    asyncExample1()
+    asyncExample1()
 //    asyncExample2()
 //    asyncExample3()
 //    asyncExample4()
@@ -130,6 +130,7 @@ suspend fun launchExample5() = coroutineScope {
         delay(200)
         println("work from job1")
         resultList.add(1)
+        println("end work from job 1")
     }
 
     job1.join()
@@ -138,6 +139,7 @@ suspend fun launchExample5() = coroutineScope {
         delay(400)
         println("work from job2")
         resultList.add(2)
+        println("end work from job 2")
     }
 
 //    job1.join()
@@ -150,6 +152,7 @@ suspend fun launchExample5() = coroutineScope {
 
 /**
  * Способ заставить parent launch подождать выпполнения дочерних корутин
+ * S
  * */
 suspend fun launchExample6() {
     val scope = CoroutineScope(Dispatchers.Default)
@@ -239,3 +242,6 @@ fun sumLazy(a: Int, b: Int): Int {
     return a + b
 }
 
+/**
+ * todo Дополнить примеры для launch билдера с параметрами Defauld и Atomic и чем это отличается от поведения диспатчера
+ * */

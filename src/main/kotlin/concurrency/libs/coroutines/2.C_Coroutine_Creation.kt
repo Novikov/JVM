@@ -4,14 +4,15 @@ import kotlinx.coroutines.*
 import kotlin.system.measureTimeMillis
 
 suspend fun main() {
-  //  coroutineScopeExample()
-   // coroutineScopeExample2()
+    //  coroutineScopeExample()
+    // coroutineScopeExample2()
 //    coroutineScopeExample3()
-   // coroutineScopeExample3_1()
-   // coroutineScopeExample4()
+    // coroutineScopeExample3_1()
+    // coroutineScopeExample4()
 //    coroutineScopeExample5()
- //   coroutineScopeExample6()
-    coroutineScopeExample7()
+    //coroutineScopeExample6()
+    //  coroutineScopeExample7()
+    coroutineScopeExample8()
 }
 
 /**
@@ -104,7 +105,7 @@ suspend fun coroutineScopeExample2() {
 
 /**
  * Функция runBlocking блокирует вызывающий поток, пока все корутины внутри вызова runBlocking { ... } не завершат свое выполнение.
- * Нет необходимости вызывать join()
+ * Нет необходимости вызывать join(). Не является Scope билдером. Это переходник из синхронного мира в мир корутин т.е билдер корутин
  * */
 fun coroutineScopeExample3() {
     runBlocking {
@@ -149,7 +150,7 @@ fun coroutineScopeExample4() {
         val job1 = launch {
             println("Start task 1")
             delay(300)
-           // throw Exception()  // тут это добавлено, чтобы сравнить поведение с примером 6
+            // throw Exception()  // тут это добавлено, чтобы сравнить поведение с примером 6
             println("End task 1")
         }
         val job2 = launch {
@@ -249,7 +250,35 @@ suspend fun coroutineScopeExample7() {
     println("Program has finished")
 }
 
-/** Еще один способ создания scope ||| ДОРАБОТАТЬ*/
-suspend fun coroutineScopeExample8(){
-    val coroutineScope = MainScope()
+/** Еще один способ создания supervisor scope*/
+suspend fun coroutineScopeExample8() {
+    val superVisorJob = SupervisorJob()
+    val supervisorScope = CoroutineScope(superVisorJob + Dispatchers.Default)
+    supervisorScope.launch(superVisorJob) { //Обязательно пробрасывать supervisor job иначе не будет работать supervisor scope behaviour
+        launch {
+            println("Start task 1")
+            delay(100)
+            throw Exception()
+            println("End task 1")
+        }
+        launch(superVisorJob) {
+            println("Start task 2")
+            delay(200)
+            println("End task 2")
+        }
+
+        val job3 = launch(superVisorJob) {
+            println("Start task 3")
+            delay(300)
+            println("End task 3")
+        }
+    }
+
+    Thread.sleep(2000)
 }
+
+/**
+ * todo отредактировать документ
+ * расписать функции coroutineScope и supervisorScope. Они возвращают job а не scopoe и не являются билдерами скоупа а выступают как изменителя контекста
+ *
+ * */
