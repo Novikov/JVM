@@ -4,15 +4,15 @@ import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
 suspend fun main() {
-//    errorExample1()
-//    errorExample1_1()
-//    errorExample2()
+    //   errorExample1()
+    //   errorExample1_1()
+    //  errorExample2()
 //    errorExample2_1()
-//    errorExample4()
+  //  errorExample4()
 //    errorExample4_1()
-    errorExample4_2()
-//    errorExample5()
-//    errorExample5_1()
+ //  errorExample4_2()
+ //   errorExample5()
+    errorExample5_1()
 //    errorExample5_2()
 //    errorExample5_3()
 //    errorExample5_4()
@@ -123,14 +123,19 @@ suspend fun errorExample4() = coroutineScope {
     val topLevelScope = CoroutineScope(Job() + coroutineExceptionHandler)
 
     val deferredResult = topLevelScope.async {
+        println("Work in async")
+        Integer.parseInt("a")
         throw RuntimeException("RuntimeException in async coroutine")
     }
 
-    try {
-        deferredResult.await()
-    } catch (exception: Exception) {
-        println("Handle $exception in try/catch")
-    }
+    //deferredResult.await() // раскоментируй чтобы бросился Exception
+
+    // хочешь отловить Exception - делай await в try/catch
+    //    try {
+//deferredResult.await()
+//    } catch (exception: Exception) {
+//        println("Handle $exception in try/catch")
+//    }
 
     delay(100)
 }
@@ -172,9 +177,7 @@ suspend fun errorExample4_2() = coroutineScope {
                 throw RuntimeException("RuntimeException in async coroutine")
             } catch (ex: Exception) {
                 println("$ex has been caught")
-
             }
-
         }
     }
     parendDeffered.await()

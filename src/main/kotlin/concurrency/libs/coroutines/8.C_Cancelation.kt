@@ -5,9 +5,9 @@ import java.lang.Exception
 import kotlin.coroutines.suspendCoroutine
 
 suspend fun main() {
-//    cancellationExample1()
-//    cancellationExample1_1()
-//    cancellationExample1_2()
+    //   cancellationExample1()
+    //  cancellationExample1_1()
+    // cancellationExample1_2()
 //    cancellationExample1_3()
 //    cancellationExample1_4()
 //    cancellationExample2()
@@ -23,6 +23,8 @@ suspend fun main() {
  *Пример отмены корутины.
  * job.cancel() не является suspend функцией и может быть вызывана где угодно.
  * Тоже самое можно сделать если вручную создать scope и вызывать cancel на нем.
+ * Но эта функция не отменяет корутину, а делает isActive == false
+ *
  * */
 suspend fun cancellationExample1() = coroutineScope {
     val job = launch {
@@ -57,16 +59,24 @@ suspend fun cancellationExample1_1() = coroutineScope {
 
 /**
  * Способы остановки работы внутри корутины
- * 1.Вызов функций ensureActive() или suspend функций yield(), delay(). Не уверен что такое поведение имеют все suspend функции. В лекции услышал что delay() стоит в одном ряду с join() await() и lock()
- * 2.Проверка состояния корутины с помощью оборота всего блока в if(isActive)
+ * 1.Вызов suspend функций yield(), delay().
+ * 2.Проверка состояния корутины с помощью оборота всего блока в if(isActive). Тоже самое делает под капотом функция ensureActive()
+ *
+ * ensureActive() сразу выбрасывает CancellationException, если корутина отменена.
+ * yield() и delay(1) проверяют состояние корутины только во время приостановки и выбрасывают CancellationException, если корутина была отменена в это время.
+ *
+ * Отменяемые функции: delay, yield, withContext, async, launch.
+ * Неотменяемые функции: Простые функции, которые не используют suspend и не содержат операций, позволяющих приостановить выполнение.
+ *
  * */
 
 suspend fun cancellationExample1_2() = coroutineScope {
     val job = launch {
         repeat(10) { index ->
-            ensureActive()
-            yield()
-            delay(1)
+            //ensureActive()
+            //yield()
+            //delay(1)
+            myDelayFunction()
             println("operation number $index")
             Thread.sleep(100)
         }
@@ -74,6 +84,14 @@ suspend fun cancellationExample1_2() = coroutineScope {
     delay(250)
     println("canceling coroutine")
     job.cancel()
+}
+
+suspend fun myDelayFunction() {
+    coroutineScope {
+        launch {
+            println("My custom delay")
+        }
+    }
 }
 
 /*** Данный способ имеет преимущество в том, что не выбрасывает мгновенно cancellation exception и позволяет выполнить некоторые cleanUp operations
@@ -206,41 +224,3 @@ suspend fun cancellationExample3_1() = coroutineScope {
  * 1)Try-catch - отловить отмену локально
  * 2)InvokeOnCompletion - отловить общую отмену корутины / скоупа.
  * */
-
-/**
- * Если мы оборачиваем в suspend какой либо внешний api то есть 2 варианта получения continuation.
- * Не что похожее реализовано на стороне retrofit. Там колбеки которые необходимо обернуть. Об этом в конце лекции про отмену.
- * Второй вариант насколько я понимаю поддерживает возможность отмены, а первый нет. Разобраться если придет задача сделать нечто похожее.
- * */
-suspend fun cancellationExample4() {
-    suspendCoroutine<Int> {}
-    suspendCancellableCoroutine<Int> {}
-}
-
-
-/**Проверить есть ли похожий пример
- * При переопределении Job() нарушается связь родитель наследник.
- * Child с переопределенным job не будет реагировать на отмену parent
- * */
-suspend fun cancellationExample5() = coroutineScope{
-    // launch a coroutine to process some kind of incoming request
-    val request = launch {
-        // it spawns two other jobs
-        launch(Job()) {
-            println("job1: I run in my own Job and execute independently!")
-            delay(1000)
-            println("job1: I am not affected by cancellation of the request")
-        }
-        // and the other inherits the parent context
-        launch {
-            delay(100)
-            println("job2: I am a child of the request coroutine")
-            delay(1000)
-            println("job2: I will not execute this line if my parent request is cancelled")
-        }
-    }
-    delay(500)
-    request.cancel() // cancel processing of the request
-    println("main: Who has survived request cancellation?")
-    delay(1000) // delay the main thread for a second to see what happens
-}

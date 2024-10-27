@@ -3,8 +3,8 @@ package concurrency.libs.coroutines
 import kotlinx.coroutines.*
 
 suspend fun main() {
-//    dispatcherExample1()
-//    dispatcherExample2()
+  //  dispatcherExample1()
+   // dispatcherExample2()
 //    dispatcherExample3()
     dispatcherExample4()
 //    dispatcherExample4_1()
@@ -62,9 +62,10 @@ suspend fun dispatcherExample3() = coroutineScope {
 
 /**
  * Unconfined (Неограниченный) dispatcher
- * Работа корутины будет начата на потоке вызывающей функции, но только до первого suspend point.
- * После suspend point работа корутины будет возобновлена в потоке, полностью определенным вызванной suspend функцией (Там всегда будет DefaultExecutor)
- * Этот default executor приходит из delay функции.
+ * Корутина не закреплена четко за определенным потоком или пулом потоков.
+ * Она запускается в текущем потоке до первой приостановки. После возобновления работы корутина продолжает работу
+ * в одном из потоков, который сторого не фиксирован. Разработчики языка Kotlin в обычной ситуации не рекомендуют
+ * использовать данный тип.
  * */
 
 suspend fun dispatcherExample4() = coroutineScope {
@@ -73,7 +74,7 @@ suspend fun dispatcherExample4() = coroutineScope {
         delay(500)
         println("Unconfined      : After delay in thread ${Thread.currentThread().name}")
     }
-    launch { // context of the parent, main runBlocking coroutine
+    launch (Dispatchers.IO){ // context of the parent, main runBlocking coroutine
         println("main runBlocking: I'm working in thread ${Thread.currentThread().name}")
         delay(1000)
         println("main runBlocking: After delay in thread ${Thread.currentThread().name}")
@@ -81,23 +82,47 @@ suspend fun dispatcherExample4() = coroutineScope {
 }
 
 /**
- * The unconfined dispatcher is an advanced mechanism that can be helpful in certain corner cases where dispatching of a coroutine for its execution
- * later is not needed or produces undesirable side-effects, because some operation in a coroutine must be performed right away.
- * The unconfined dispatcher should not be used in general code.
+ * Пример задачи: Локальное вычисление на основе пользовательского ввода
+ * Предположим, у вас есть приложение, в котором пользователь вводит данные,
+ * и вам нужно выполнить легковесное вычисление на основе этого ввода, например, посчитать факториал числа.
+ * Поскольку операция не требует долгого выполнения и не взаимодействует с сетью или базой данных, использование
+ * Unconfined будет оптимальным.
+ *
+ * Ну т.е во всех ситуациях когда мы можем начать работу на main потоке и завершить на другом потоке
+ *
+ * class FactorialActivity : AppCompatActivity() {
+ *
+ *     private lateinit var inputField: EditText
+ *     private lateinit var calculateButton: Button
+ *     private lateinit var resultTextView: TextView
+ *
+ *     override fun onCreate(savedInstanceState: Bundle?) {
+ *         super.onCreate(savedInstanceState)
+ *         setContentView(R.layout.activity_factorial)
+ *
+ *         inputField = findViewById(R.id.inputField)
+ *         calculateButton = findViewById(R.id.calculateButton)
+ *         resultTextView = findViewById(R.id.resultTextView)
+ *
+ *         calculateButton.setOnClickListener {
+ *             calculateFactorial(inputField.text.toString().toIntOrNull())
+ *         }
+ *     }
+ *
+ *     private fun calculateFactorial(number: Int?) {
+ *         CoroutineScope(Dispatchers.Unconfined).launch {
+ *             if (number != null && number >= 0) {
+ *                 val result = performFactorial(number)
+ *                 resultTextView.text = "Factorial: $result"
+ *             } else {
+ *                 resultTextView.text = "Please enter a valid number."
+ *             }
+ *         }
+ *     }
+ *
+ *     private suspend fun performFactorial(n: Int): Long {
+ *         return if (n == 0) 1 else n * performFactorial(n - 1) // Рекурсивный расчет факториала
+ *     }
+ * }
  * */
-
-/** Можно создать диспатчер с помощью метода newSingleThreadContext().
- * Вся работа будет выполнена на новом потоке*/
-@OptIn(DelicateCoroutinesApi::class)
-suspend fun dispatcherExample5() = coroutineScope {
-    println("method start ${Thread.currentThread().name}")
-
-    launch(newSingleThreadContext("New thread")) {
-        println("coroutine start ${Thread.currentThread().name}")
-        delay(300)
-        println("coroutine end ${Thread.currentThread().name}")
-    }.join()
-
-    println("method end ${Thread.currentThread().name}")
-}
 
