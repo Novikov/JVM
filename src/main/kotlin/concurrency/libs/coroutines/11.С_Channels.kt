@@ -6,9 +6,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 suspend fun main() {
-    channelExample1()
+  //  channelExample1()
 //    channelExample2()
-//    channelExample3()
+    channelExample3()
 }
 
 /** Simple Channel*/
@@ -63,12 +63,17 @@ suspend fun channelExample3() = coroutineScope {
     val channel = Channel<Int>()
 
     launch {
-        channel.send(5)
+        channel.send(1)
+        channel.send(2)
+        channel.send(3)
     }
 
     launch {
-        val i = channel.receive()
-        println(i)
+        repeat(3) {
+            val number = channel.receive()
+            println(number)
+        }
+
         channel.close()
     }
 

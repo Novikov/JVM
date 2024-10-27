@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 suspend fun main() {
-    flowExample1()
-//    flowExample2()
-//    flowExample3()
+ //   flowExample1()
+  //  flowExample2()
+  //  flowExample3()
 //    flowExample4()
 }
 

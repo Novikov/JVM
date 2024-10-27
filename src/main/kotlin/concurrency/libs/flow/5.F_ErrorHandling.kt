@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.*
 import java.lang.ArithmeticException
 
 suspend fun main() {
-    handleErrorExample1()
+//    handleErrorExample1()
 //    handleErrorExample2()
-//    handleErrorExample3()
+    handleErrorExample3()
 //    handleErrorExample4()
 //    handleErrorExample5()
 //    handleErrorExample6()

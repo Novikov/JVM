@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.flow
 
 suspend fun main() {
-    cancelFlowExample1()
-//    cancelFlowExample2()
-//    cancelFlowExample3()
+   // cancelFlowExample1()
+   // cancelFlowExample2()
+    cancelFlowExample3()
 //    cancelFlowExample4()
 //    cancelFlowExample5()
 }

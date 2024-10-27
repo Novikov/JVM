@@ -324,4 +324,5 @@ suspend fun errorExample5_4() = coroutineScope {
 
 /**
  * RunCatching todo
+ * /** runCatсhing неплохо объясняется тут https://hossainkhan.medium.com/kotlin-coroutines-error-handling-strategy-runcatching-and-result-class-14e1467ced6*/
  * */
