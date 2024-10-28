@@ -1,20 +1,37 @@
 package concurrency.libs.flow
 
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 suspend fun main() {
- //   flowExample1()
-  //  flowExample2()
-  //  flowExample3()
+    builderExample()
+
+    //   flowExample1()
+    //  flowExample2()
+    //  flowExample3()
 //    flowExample4()
+
+    flowContextExample()
+}
+
+suspend fun builderExample() {
+    // Если нужно эмитить значения то используем оператор flow{ }
+    val flow = flow {
+        emit("a")
+        emit("b")
+        emit("c")
+    }
+
+    // Создаем Flow из набора значений
+    val flow2 = listOf("a", "b", "c").asFlow()
+
+    val flow3 = flowOf("a", "b", "c")
 }
 
 /**
+ * Flow является холодным источником данных. Он для каждого получателя будет генерировать данные заново.
  * Обычно suspend функция возвращает нам одно значение. И пока мы ждем это значение, корутина приостанавливается.
  * Flow позволяет расширить это поведение. Он делает так, что мы можем получать последовательность (поток) данных вместо одного значения.
  * И это будет происходит в suspend режиме.Т.е. корутина будет приостанавливаться на время ожидания каждого элемента.
@@ -31,10 +48,6 @@ fun getData(): Flow<Int> {
         }
     }
 }
-
-/**
- * Flow является холодным источником данных. Он для каждого получателя будет генерировать данные заново.
- * */
 
 /**
  * Выпуск значений flow должен быть в одной корутине иначе будет crash. Пример ниже упадет.
@@ -123,3 +136,38 @@ suspend fun getDataChannelFlow(): Flow<Int> {
         }
     }
 }
+
+/**
+ * ---------------------------------Context----------------------------------------------------------
+ * */
+
+suspend fun getSmallFlow() = flow {
+    for (i in 1..10) {
+        //withContext(..){} // если обернуть код ниже в withContext - бдует краш.
+        emit(i)
+        println(currentCoroutineContext())
+        delay(500)
+    }
+}
+
+/** Flow примет контекст того места откуда был вызван collect. Это называется context preservation (Сохранение контекста)
+ * Если это будет не так (Например обернуть эмиссию с помощью withContext) - будет краш
+ * Контекст нужно менять особым образом, а не так как мы привыкли в корутинах*/
+suspend fun flowContextExample() = coroutineScope {
+    withContext(CoroutineName("Caller method context") + Dispatchers.Default) {
+        getSmallFlow().collect {
+            println(it)
+        }
+    }
+}
+
+/**Если добавим оператор flowOn - исключения не будет. Это единственный способ изменить поток на котором будет происходить эмиссия, с условием того
+ * что наблюдать будем на другом потоке*/
+suspend fun getSmallFlowException() = flow {
+    for (i in 1..10) {
+        //withContext(..){} // если обернуть код ниже в withContext - бдует краш.
+        emit(i)
+        println(currentCoroutineContext())
+        delay(500)
+    }
+}.flowOn(Dispatchers.IO)

@@ -4,6 +4,9 @@ import kotlinx.coroutines.*
 import kotlin.system.measureTimeMillis
 
 suspend fun main() {
+
+    //Нет вызывов Launch и Async
+
   //  coroutineBuilders2Example1()
 //    coroutineBuilders2Example2()
 //    coroutineBuilders2Example3()

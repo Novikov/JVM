@@ -8,6 +8,11 @@ import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flow
 import kotlin.system.measureTimeMillis
 
+
+/**
+ * todo Розов сказал что проблемы Backpressure вообще не существует. Найти причину такого вывода
+ * */
+
 suspend fun main() {
 //    bufferingExample1()
 //    bufferingExample2()
@@ -25,7 +30,7 @@ suspend fun simpleBufferingFlow() = flow {
 suspend fun bufferingExample1() = coroutineScope {
     val time = measureTimeMillis {
         simpleBufferingFlow()
-            .buffer() // приведет кк тому что код эмиссии и потребления будет вызываться одновременно. Это экономит 100мс на выпуск
+            .buffer() // todo Разобрать все параметры этого метода
             .collect { value ->
                 delay(300)
                 println(value)

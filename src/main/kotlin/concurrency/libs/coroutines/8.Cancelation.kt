@@ -2,7 +2,6 @@ package concurrency.libs.coroutines
 
 import kotlinx.coroutines.*
 import java.lang.Exception
-import kotlin.coroutines.suspendCoroutine
 
 suspend fun main() {
     //   cancellationExample1()
