@@ -5,10 +5,10 @@ import io.reactivex.subjects.*
 
 
 fun main() {
-//    publishSubjectExample()
+ //   publishSubjectExample()
 //    behaviourSubjectExample()
 //    replaySubjectExample()
-//    asyncSubjectExample()
+  //  asyncSubjectExample()
 //    unicastSubjectExample()
     twoThreadsProblemExample()
 //    serializedSubjectExample()
@@ -119,11 +119,12 @@ fun asyncSubjectExample() {
         onNext = { println("subscriber 1 onNext - $it") })
     subject.onNext(5)
 
+    subject.onComplete()
+
     subject.subscribeBy(onError = { println(it.message) },
         onComplete = { println("subscriber 2 onComplete") },
         onNext = { println("subscriber 2 onNext - $it") })
 
-    subject.onComplete()
 }
 
 /** Subject, на который можно подписать лишь одного получателя. И даже после того как этот один получатель отписался, никто больше не сможет подписаться.

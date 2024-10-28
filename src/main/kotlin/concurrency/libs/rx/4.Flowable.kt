@@ -9,15 +9,15 @@ import org.reactivestreams.Subscription
 import java.util.concurrent.TimeUnit
 
 fun main() {
-//    backpressureProblemExample()
-//    backpressureProblemExample2()
-    flowableExample()
+   // backpressureProblemExample()
+   // backpressureProblemExample2()
+   // flowableExample()
 //    subscriberExample()
 //    subscriberExample2()
 //    flowableExample2()
 //    flowableExample3()
 //    flowableStrategiesExample1()
-//    flowableStrategiesExample2()
+    flowableStrategiesExample2()
 //    flowableStrategiesExample3()
 //    flowableStrategiesExample4()
 //    flowableStrategiesExample5()
@@ -86,7 +86,7 @@ fun flowableExample() {
  * Flowable нужно использовать в тех случаях:
  * 1)Большое количество событий (от 10000)
  * 2)Чтение файлов, данных из бд
- * 3)Работа с сетью, StreamAPI
+ * 3)Большие коллекции, StreamAPI
 
  * Observables нужно использовать так же в трех случаях:
  * 1)Небольшое количество событий (до 10000)
@@ -191,13 +191,13 @@ fun flowableStrategiesExample1() {
 
 /** Данная стратегия работает на выпуск данных. При переполнении буфера (более 128 эмитов) над обработанными событиями выбрасывается OnErrorNotImplementedException*/
 fun flowableStrategiesExample2() {
-    val source = Observable.range(1, 1000) // Если написать 128 то ошибки не будет
+    val source = Observable.interval(1, TimeUnit.MILLISECONDS) // Если написать 128 то ошибки не будет
     source.toFlowable(BackpressureStrategy.ERROR)
-        .map { MyItem(it) }
+        .map { MyItem(it.toInt()) }
         .observeOn(Schedulers.computation())
         .subscribe {
             print("Rec $it;\t")
-            Thread.sleep(100)
+            Thread.sleep(100) // закоментируй и ошибка уйдет
 
         }
     Thread.sleep(70000)

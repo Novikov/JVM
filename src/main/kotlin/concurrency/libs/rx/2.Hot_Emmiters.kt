@@ -4,10 +4,10 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 fun main() {
-    coldObserverProblemsExample()
-//    publish_hotObservableExample()
+   // coldObserverProblemsExample()
+   // publish_hotObservableExample()
 //    replay_hotObservableExample()
-//    refcount_hotObservableExample()
+    refcount_hotObservableExample()
 //    cache_hotObservableExample()
 //    connectableObservableExample2()
 //    connectableObservableExample3()
