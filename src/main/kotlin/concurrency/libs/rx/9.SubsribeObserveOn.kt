@@ -11,13 +11,13 @@ fun main() {
 //    withoutChangingThreadExample()
 //    subscribeOnExample()
 //    observeOnExample()
-    unionSubscribeOnObserveOn()
+//    unionSubscribeOnObserveOn()
 //    doubleObserveOnExample()
-//    doubleSubscribeOnExample()
-//    doubleSubscribeOnExample2()
+  //  doubleSubscribeOnExample()
+ //   doubleSubscribeOnExample2()
 //    operatorsWithSchedulers()
 //    subjectsRulesExample()
-//    subjectsRulesExample2()
+    subjectsRulesExample2()
 }
 
 /**
@@ -365,9 +365,12 @@ fun subjectsRulesExample() {
 }
 
 
-/** Исключение для правила из предыдущего примера. Когда мы подписываемся на subject, он сразу возвращает значение и оно обрабатывается потоке
- * который указан через Scheduler в subscribeOn. Т.е в данном случае из Shedulers.io(),
- * а вот когда приходит следующее сообщение в subject, то используется поток, в котором был вызван onNext()*/
+/**
+ * C Subject есть ньюанс. Поток эмиссии событий всегда будет равено потоку на котором был вызван onNext
+ * Если потоком поглощения мы можем управлять через добавление observeOn оператора в цепочку Subject,
+ * то на поток эмиссии мы можем влиять только оборачиванием места вызова onNext в другой поток.
+ * Об этом нужно всегда помнить при работе с Subjects.
+ * */
 fun subjectsRulesExample2() {
 
     val observer: Observer<String> = object : Observer<String> {
@@ -390,20 +393,27 @@ fun subjectsRulesExample2() {
 
     val subject = BehaviorSubject.create<String>()
 
-    subject.onNext("str 0 ") // TODO: Разобраться почему subscribeOn блокирует первое событие до подписки
+    subject.onNext("str 0 ")
 
     subject
         .doOnNext { println("doOnNext $it [thread] - ${Thread.currentThread().name}\"") }
         .subscribeOn(Schedulers.io())
-//        .observeOn(Schedulers.computation())
+        .doOnEach { println("doOnEach before observeOn $it [thread] - ${Thread.currentThread().name}\"") }
+        .observeOn(Schedulers.computation())
+        .doOnEach { println("doOnEach after observeOn $it [thread] - ${Thread.currentThread().name}\"") }
+        /**
+         * Это значит что все flatMap должны быть после этой строчки или заварачивать onNext в цепочку на другом потоке
+         *    Observable.just("Событие 1", "Событие 2")
+         *             .subscribeOn(Schedulers.io()) // Эмиссия на io-потоке
+         *             .subscribe(subject::onNext);
+         * */
         .subscribe(observer)
 
     subject.onNext("str 1")
 
-    Executors.newCachedThreadPool().execute(Runnable {
-        Thread.sleep(1000)
-        subject.onNext("str2")
-    })
+    Thread.sleep(2000)
 
-    Thread.sleep(4000)
+    subject.onNext("str2")
+
+    Thread.sleep(6000)
 }

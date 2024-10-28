@@ -1,19 +1,19 @@
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
-import io.reactivex.rxkotlin.toObservable
-import io.reactivex.rxkotlin.zipWith
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 fun main() {
     //flatting
-//    flatmapExample()
+
+ //   flatmapExample()
 //    flatmapExample1()
 //    flatmapExample2()
-//    concatMapExample()
+
+   // concatMapExample()
+
 //    switchMapExample()
-//    switchMapExample2()
-//    switchMapExample3()
+ //   switchMapExample2()
+    switchMapExample3()
 }
 
 /** flatting */
@@ -24,10 +24,12 @@ fun main() {
 //empty
 fun flatmapExample() {
     Observable.range(1, 10).flatMap {
-        return@flatMap Observable.empty<Int>()
+        return@flatMap Observable.just(it)
     }.blockingSubscribe {
         println("Received $it")
     }
+
+    Thread.sleep(10000)
 }
 
 //1 элемент на каждую эмиссию
