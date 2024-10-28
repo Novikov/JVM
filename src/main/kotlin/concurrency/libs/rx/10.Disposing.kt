@@ -98,7 +98,7 @@ fun compositeDisposable2Example() {
     println("number of disposable after adding one more disposable - ${compositeDisposable.size()}")
 }
 
-// TODO: Разобраться почему compositedisposable.clear() нужно использовать во фрагментах, а compositedisposable.dispose() в activity? По описанию фрагмент не уничтожается. Не совсем понял что имеется ввиду. Дописать после подробного разбора транзакций навигации.
+//compositedisposable.clear() нужно использовать во фрагментах, а compositedisposable.dispose() в activity
 
 /***У данного типа disposable отсутствуют методы add, clear, size
  * disposable.set() - добавить новый disposable и выполнить dispose на предыдущем
@@ -133,27 +133,3 @@ fun serialDisposableExample() {
     println("current disposable - ${serialDisposable.get()}")
 
 }
-
-/** С помощью SerialObservable можно реализовать UseCase поиска без использования switchMap()
- * TODO посмотреть сюда еще раз после подробного разбора switchMap()
- * */
-
-//private val serialDisposable by lazy {
-//    SerialDisposable()
-//}
-//
-//override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//    super.onViewCreated(view, savedInstanceState)
-//
-//    view.editText.doAfterTextChanged { text ->
-//        serialDisposable.set(
-//            api.searchFor(text)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({ result ->
-//                    println(result)
-//                }, { throwable ->
-//                    println(throwable)
-//                })
-//        )
-//    }
-//}
