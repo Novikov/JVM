@@ -4,7 +4,7 @@ package algorithms.leetcode.array
 
 fun main() {
     val numbers = arrayOf<String>("1", "1", "2", "3") // массив чисел отсортирован
-    val correctLength = removeDuplicates(numbers)
+    val correctLength = removeDuplicates2(intArrayOf(1,2))
     println(correctLength)
 }
 
@@ -16,8 +16,19 @@ fun removeDuplicates(nums: Array<String>): Int {
             nums[j] = nums[i]
             j++
         }
-        println(nums.toList().toString())
     }
     return j
 }
+
+fun removeDuplicates2(nums: IntArray): Int {
+    var firstP = 1
+    for (secondP in 1 until nums.size){
+        if(nums[secondP] != nums[firstP - 1]) {
+            nums[firstP] = nums[secondP]
+            firstP++
+        }
+    }
+    return firstP
+}
+
 // тут фишка в том что помимо количества уникальных элементов нужно изменить содержание массива так чтобы не было дубликатов до последнего числа
