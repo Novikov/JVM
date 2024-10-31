@@ -253,7 +253,7 @@ suspend fun coroutineScopeExample7() {
         }
     }
 
-    println("Program has finished")
+    println("string.StrPool has finished")
 }
 
 /** Еще один способ создания supervisor scope*/

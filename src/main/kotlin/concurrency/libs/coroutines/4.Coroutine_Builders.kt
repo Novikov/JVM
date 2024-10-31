@@ -184,14 +184,14 @@ suspend fun asyncExample1() {
         println("Hello work!")
     }
     deferred.join() //Так же может использоваться потому что deferred наследник job
-    println("Program has finished")
+    println("string.StrPool has finished")
 }
 
 /** Для получения результата из объекта Deferred применяется функция await(). */
 suspend fun asyncExample2() = coroutineScope {
     val message: Deferred<String> = async { getMessage() }
     println("message: ${message.await()}")
-    println("Program has finished")
+    println("string.StrPool has finished")
 }
 
 suspend fun getMessage(): String {
