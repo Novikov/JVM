@@ -22,8 +22,13 @@ fun main() {
 fun classExample1() {
     val propExample = PropertyClass(
         firstParam = "firstParam",
-        secondParam = "secondParam"
+        secondParam = "secondParam",
+        thirdParam = "thirdParam"
     )
 }
 
-class PropertyClass(val firstParam: String, secondParam: String)
+class PropertyClass(
+    val firstParam: String, // сгенерится только геттер
+    secondParam: String, // ничего не сгенерится
+    var thirdParam: String // сгенерится геттер и сеттер
+)
