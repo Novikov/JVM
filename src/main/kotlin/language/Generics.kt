@@ -14,3 +14,5 @@ inline fun <reified T>T.printClassName(){
 }
 
 //https://www.youtube.com/watch?v=vfewyonYXOw&list=PLlb7e2G7aSpQith1Z6xRpU8jFPgkh_Gvz&index=4
+
+//todo type vs class
