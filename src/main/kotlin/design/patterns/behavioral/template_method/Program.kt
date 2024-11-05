@@ -1,4 +1,4 @@
-package design.patterns.behavioral.template
+package design.patterns.behavioral.template_method
 
 /** Определяет основу класса и позволяет подклассам переопределять некоторые его части,
  * не изменяя его структуру в целом

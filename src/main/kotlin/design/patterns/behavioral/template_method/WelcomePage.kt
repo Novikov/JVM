@@ -1,4 +1,4 @@
-package design.patterns.behavioral.template
+package design.patterns.behavioral.template_method
 
 class WelcomePage : WebsiteTemplate(){
 
