@@ -1,4 +1,4 @@
-package design.patterns.creational
+package design.patterns.creational.factory
 
 /**
  * Цель - создание интерфейса который создает объект. При этом выбор того экземпляр какого класса
@@ -18,38 +18,8 @@ package design.patterns.creational
  * */
 
 fun main() {
-    val car = CarSelector.getCar(RoadType.CITY)
+    val car = CarSelectorFactory.getCar(RoadType.CITY)
     car.drive()
 }
 
-interface Car {
-    fun drive()
-}
 
-class Geep : Car {
-    override fun drive() {
-        println("The Geep is moving at speed 50 km/h")
-    }
-}
-
-class SportCar : Car {
-    override fun drive() {
-        println("The SportCar is moving at speed 100 km/h")
-    }
-}
-
-enum class RoadType {
-    CITY, OFF_ROAD
-}
-
-//Фабрика со статичным методов
-class CarSelector {
-    companion object {
-        fun getCar(roadType: RoadType): Car {
-            return when (roadType) {
-                RoadType.CITY -> SportCar()
-                RoadType.OFF_ROAD -> Geep()
-            }
-        }
-    }
-}
