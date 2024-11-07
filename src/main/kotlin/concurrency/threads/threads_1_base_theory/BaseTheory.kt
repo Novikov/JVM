@@ -76,7 +76,13 @@ fun concurrencyBehaviourExample(){
 
     tcw1.start()
     tcw2.start()
-    tcw2.interrupt() /** Устанавливает флаг прерывания */
+    tcw2.interrupt() /**
+    Устанавливает флаг прерывания
+    Прирывание потока должно быть кооперативным
+    Это значит что поток сам должен следить за тем отменен он или нет
+    1)if(currentThread.isInterrupted())
+    2)try {блокирующая операция} catch(ex: InterruptedException)
+     */
 
     // Помни что у thread можно запустить метод run который отработает в ui потоке
     // tcw1.run() компилятор подсказывает что делать этого не надо

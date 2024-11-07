@@ -3,11 +3,10 @@ package concurrency.threads.threads_2_synchronization
 import concurrency.threads.threads_2_synchronization.utils.*
 import java.util.concurrent.Exchanger
 import java.util.concurrent.atomic.AtomicInteger
-import java.util.concurrent.atomic.AtomicLong
 
 
 fun main() {
-    //synchronizationExample1()
+    synchronizationExample1()
     //synchronizationExample2()
     //synchronizationExample3()
     //synchronizationExample4()
@@ -17,7 +16,7 @@ fun main() {
     //synchronizationExample8()
     //synchronizationExample9()
     //synchronizationExample10()
-    synchronizationExample11()
+    //synchronizationExample11()
 }
 
 /**
@@ -27,7 +26,6 @@ fun main() {
  * У каждого потока есть своя Stack память
  * Все потоки имеют общую heap память
  * https://indrabasak.github.io/images/jvmruntime/jvm-runtime-memory.png?style=centerme
- *
  * */
 
 /**
@@ -47,13 +45,14 @@ fun synchronizationExample1() {
 }
 
 /**
- * Мьютекс (Mutual Exclusion Objects)
+ * Мьютекс (Mutual Exclusion Objects) (Object который мы передаем в synchronized block)
  * Механизм блокировки
  * Любой поток должен захватить мьютекс для доступа к ресурсу, который находится под его защитой.
  * Контролирует доступ только к одному ресурсу.
  * Для решения это проблемы мы можем использовать ключевое слово synchronized
  * Оно не позволяет использовать ресурс более чем одному потоку в каждый момент времени.
  * Отработает медленнее чем предыдущий пример
+ * Помни что нужно синхронизировать не только операции на запись, но и на чтение (сеттер например)!!!
  * */
 
 fun synchronizationExample2() {
@@ -157,6 +156,7 @@ fun synchronizationExample7() {
 /**
  * Mutex vs Monitor
  * Каждый lock захватывает Mutex ресурса
+ * Mutex например это объект который передается в synchronized block
  * Mutex — это механизм, который обеспечивает взаимное исключение, позволяя только одному потоку получать
  * доступ к ресурсу в любой момент времени. Это предотвращает race condition и обеспечивает корректность
  * работы программы

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 fun main() {
 //    withoutChangingThreadExample()
-//    subscribeOnExample()
+    subscribeOnExample()
 //    observeOnExample()
 //    unionSubscribeOnObserveOn()
 //    doubleObserveOnExample()
@@ -17,7 +17,7 @@ fun main() {
  //   doubleSubscribeOnExample2()
 //    operatorsWithSchedulers()
 //    subjectsRulesExample()
-    subjectsRulesExample2()
+  //  subjectsRulesExample2()
 }
 
 /**
@@ -71,6 +71,7 @@ fun subscribeOnExample() {
         println("Inside start observable [thread] - ${Thread.currentThread().name}")
         it.onNext("Emit 1")
         it.onNext("Emit 2")
+        Thread.sleep(10000)
         println("Inside intermediate observable [thread] - ${Thread.currentThread().name}")
         it.onNext("Emit 3")
         it.onNext("Emit 4")
@@ -95,7 +96,6 @@ fun subscribeOnExample() {
         }
     }
     observable
-        .subscribeOn(Schedulers.io())
         .subscribe(observer)
 
     Thread.sleep(3000)

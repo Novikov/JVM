@@ -2,7 +2,8 @@ package language
 
 fun main() {
 //    dataClassExample1()
-    dataClassExample2()
+//    dataClassExample2()
+    dataClassExample3()
 }
 
 /**
@@ -117,3 +118,25 @@ fun dataClassExample2() {
 
 data class Person2(val number: Array<Int>)
 data class Person3(val name: String, val lastName: String)
+
+/**
+ * Пример демонстрирует почему необходимо при любой возможности использовать val свойства в data class
+ * */
+fun dataClassExample3(){
+    val map = HashMap<Person4, String>()
+    val person1 = Person4("John", 30)
+    // Добавляем person1 в HashMap
+    map[person1] = "Engineer"
+    println(map[person1])  // до изменения
+    // Изменяем поле name после добавления в HashMap
+    person1.name = "Jack"
+    // Пытаемся извлечь объект из HashMap
+    println(map[person1])  // после изменения ожидаемый результат: "Engineer"
+}
+
+data class Person4(var name: String, var age: Int)
+
+/**
+ * Использование val свойств в Data классе дает нам гарантию видимости актуальных значений в нескольких потоках
+ * Мы точно знаем что не будет race condition
+ * */

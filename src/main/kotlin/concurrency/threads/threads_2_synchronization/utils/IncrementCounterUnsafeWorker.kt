@@ -1,6 +1,7 @@
 package concurrency.threads.threads_2_synchronization.utils
 
 class IncrementCounterUnsafeWorker {
+
     var counter: Int = 0
 
     fun startWorker(){

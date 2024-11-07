@@ -1,11 +1,20 @@
 package concurrency.threads
 
 /**
+ * атомарность/видимость/reordering/immutablillity - расписать определения в Base Theory
+ * wait/notify/notifyAll
+ * Callable/Future
+ * */
+
+
+
+/**
  * Что такое блокирующая операция и почему не daemon поток завершается до конца а корутина нет.
  * Как добиться парралельного!!! выполнения программы с помощью ForkJoin/StreamApi/ExecutorService?
   Что такое suspendCoroutine и continuation
  Добавить пример с InterruptedException
- *   + Расписать почему suspend функцию можно вызвать только из suspend функции или корутины?
+
+
  * 0)Конспект по многопоточности, deadlock
  * 1)вызов корутин на разных скоуп. Пример Миши на runBlocking
  * 2)Старт корутины на main + Проверить будет ли фризиться UI если запускать на main потоке множество запросов в сеть.
