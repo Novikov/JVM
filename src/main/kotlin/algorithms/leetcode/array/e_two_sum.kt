@@ -31,9 +31,9 @@ package algorithms.leetcode.array
  * */
 
 fun main() {
-    val nums = intArrayOf(0, 2, 3, 6, 0)
-    val target = 8
-    val twoSum = twoSum(nums, target)
+    val nums = intArrayOf(3, 2, 4)
+    val target = 6
+    val twoSum = twoSum2(nums, target)
     twoSum.forEach { println(it) }
 }
 
@@ -72,3 +72,29 @@ fun twoSumElegant(nums: IntArray, target: Int): IntArray {
 
     throw IllegalArgumentException("No two sum solution")
 }
+
+
+    fun twoSum2(nums: IntArray, target: Int): IntArray {
+        //Пройтись по массиву и считать difference
+        //Если difference + currentDigit == target вернуть индексы
+        //HashMap используем потому чтобы уйти от n^2
+
+        val digitsMap = mutableMapOf<Int, Int>() // digit, index
+
+        //Заполняем HashMap
+        nums.forEachIndexed { index, digit ->
+            digitsMap[digit] = index
+        }
+
+       val resultArr = IntArray(2)
+
+       nums.forEachIndexed { index, currentDigit ->
+            val difference = target - currentDigit
+           if (digitsMap.keys.contains(difference) ) {
+                val differenceIndex = digitsMap[difference] ?: 0
+               return intArrayOf(index, differenceIndex)
+            }
+        }
+
+        return resultArr
+    }

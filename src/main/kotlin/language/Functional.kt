@@ -12,7 +12,9 @@ fun main() {
 //    lambdaExample6()
 //    lambdaExample7()
 //    lambdaExample8()
-    lambdaExample9()
+    //lambdaExample9()
+    val numsMap = hashMapOf<Int, Int>()
+    numsMap.values
 }
 
 /**

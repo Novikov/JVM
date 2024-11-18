@@ -37,6 +37,9 @@ private fun invarianceExample() {
     //arrInt = arrString
 }
 
+/**
+ * out у Collection
+ * */
 fun covarianceExample() {
     var listAny = listOf<Any>()
     var listString = listOf<String>("A","B","C")
@@ -44,6 +47,9 @@ fun covarianceExample() {
     listAny.forEach { println(it) }
 }
 
+/**
+ * sortedWith
+ * */
 fun contraVariantExample(){
     val employerComparator = Comparator<Employer>{p1,p2 -> p1.name.compareTo(p2.name)}
     val programmerList = listOf<Programmer>().sortedWith(employerComparator)
@@ -65,3 +71,18 @@ inline fun <reified T>T.printClassName(){
 //https://www.youtube.com/watch?v=vfewyonYXOw&list=PLlb7e2G7aSpQith1Z6xRpU8jFPgkh_Gvz&index=4
 
 //todo type vs class
+
+
+fun testStar(){
+    val listOfInt = listOf(1,2,3,4,5)
+    printAnimals(listOfInt)
+
+    val list: List<*> = mutableListOf("Hello", "World")
+    //list.add("DSA")
+}
+
+fun printAnimals(animals: List<Any?>) {
+    for (animal in animals) {
+        println(animal)
+    }
+}

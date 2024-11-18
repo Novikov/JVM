@@ -1,5 +1,6 @@
 package concurrency.libs.flow
 
 /**
- * Что будет если в цепочку придет Null
+ * AsLiveData() расписать сложное поведение
+ * Расписать repeatOnLifeCycle && flowWithLifecycler в модуле ViewModel
  * */

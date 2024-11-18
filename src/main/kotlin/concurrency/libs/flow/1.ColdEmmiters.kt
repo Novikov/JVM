@@ -5,6 +5,8 @@ import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.flow.*
 
+
+/** Нет подписки - нет эмитов */
 suspend fun main() {
     builderExample()
 
