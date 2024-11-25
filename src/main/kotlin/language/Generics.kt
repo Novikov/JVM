@@ -32,23 +32,34 @@ fun main(){
 /** Какие бы не были отношения между типом A и типом B
  * контейнер из A не может быть ни подтипом ни надтипом над контейнером B*/
 private fun invarianceExample() {
-    var arrInt = arrayOf<Any>(1, 2, 3, 4, 5)
+    var arrInt = arrayOf<Int>(1, 2, 3, 4, 5)
     var arrString = arrayOf<String>("1", "2", "3", "4", "5")
-    //arrInt = arrString
+    var arrAny = arrayOf<Any>()
+    //arrString = arrInt нельзя присвоить ссылку
+    //arrAny = arrString так же
+
+    var intList = mutableListOf<Int>(1,2,3,4,5)
+    var stringList = mutableListOf<String>("1","2","3","4","5")
+    var anyList = mutableListOf<Any>("1","2","3","4","5")
+     //stringList = intList
+    //anyList = stringList
+
+    //В обоих случаях мы не теряем возможность для чтения и записи элементов
 }
 
 /**
- * out у Collection
+ * out у List (Ковариантность)
  * */
 fun covarianceExample() {
     var listAny = listOf<Any>()
     var listString = listOf<String>("A","B","C")
     listAny = listString
-    listAny.forEach { println(it) }
+    listAny
+        .forEach { println(it) } // мы можем читать, но не записывать
 }
 
 /**
- * sortedWith
+ * in у Comparator<in T> типа параметра sortedWith метода (Контрвариантность)
  * */
 fun contraVariantExample(){
     val employerComparator = Comparator<Employer>{p1,p2 -> p1.name.compareTo(p2.name)}
@@ -58,6 +69,7 @@ fun contraVariantExample(){
 open class Employer(val name: String, val lastname: String)
 
 class Programmer(name: String, lastname: String, grade: Int) : Employer(name, lastname)
+
 
 fun reifiedExample(){
     "Some string".printClassName()
